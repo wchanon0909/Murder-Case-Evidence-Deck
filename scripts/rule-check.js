@@ -1,6 +1,8 @@
 'use strict';
 
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
 const Cases = require('../src/cases');
 const Game = require('../src/gameLogic');
 
@@ -52,6 +54,11 @@ function checkCaseContent() {
   caseData.evidence.forEach((card) => {
     assert.ok(!evidenceIds.has(card.id), `Duplicate evidence id: ${card.id}`);
     evidenceIds.add(card.id);
+    assert.match(card.image || '', /^\/assets\/evidence\/[a-z0-9-]+\.jpg$/, `${card.title} needs a local evidence image.`);
+    assert.ok(
+      fs.existsSync(path.join(__dirname, '..', 'public', card.image)),
+      `Missing image file for ${card.title}: ${card.image}`
+    );
     assert.ok(card.hotspots.length >= 3 && card.hotspots.length <= 4, `${card.title} needs 3–4 hotspots.`);
     const categoriesOnCard = new Set();
     card.hotspots.forEach((hotspot) => {
@@ -60,11 +67,18 @@ function checkCaseContent() {
       hotspotIds.add(compositeId);
       assert.ok(validCategories.has(hotspot.category), `Invalid category on ${compositeId}.`);
       assert.ok(hotspot.result && hotspot.notebook, `${compositeId} needs reveal and notebook text.`);
+      assert.ok(hotspot.position, `${compositeId} needs an image hotspot position.`);
+      assert.ok(Number.isFinite(hotspot.position.x) && hotspot.position.x >= 0 && hotspot.position.x <= 100, `${compositeId} x must be 0–100.`);
+      assert.ok(Number.isFinite(hotspot.position.y) && hotspot.position.y >= 0 && hotspot.position.y <= 100, `${compositeId} y must be 0–100.`);
       categoriesOnCard.add(hotspot.category);
     });
     assert.ok(categoriesOnCard.has('critical'), `${card.title} needs a critical choice.`);
     assert.ok(categoriesOnCard.has('red_herring'), `${card.title} needs a red herring.`);
   });
+  assert.ok(
+    fs.existsSync(path.join(__dirname, '..', 'public', 'assets', 'suspects', 'suspect-lineup.jpg')),
+    'The deduction board suspect lineup image is missing.'
+  );
 }
 
 function checkInvestigationRules() {

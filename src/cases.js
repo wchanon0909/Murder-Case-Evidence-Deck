@@ -23,11 +23,13 @@
       id: 'broken-wine-glass',
       title: 'แก้วไวน์แตก',
       shortDescription: 'แก้วคริสตัลแตกอยู่ข้างโต๊ะทำงาน มีไวน์แดงเหลือเพียงเล็กน้อย',
+      image: '/assets/evidence/broken-wine-glass.jpg',
       icon: 'wine-glass',
       hotspots: [
         {
           id: 'glass-rim-residue',
           label: 'คราบที่ขอบแก้ว',
+          position: { x: 43, y: 36 },
           category: HOTSPOT_TYPES.CRITICAL,
           resultTitle: 'ผลึกยาพิษที่ขอบแก้ว',
           result: 'ใต้แสงเฉียงพบผลึกสีน้ำตาลจางเกาะเฉพาะด้านในขอบแก้ว ไม่กระจายอยู่ทั่วคราบไวน์ แสดงว่าสารถูกแต้มลงในแก้วเป้าหมาย ไม่ได้ผสมในขวด',
@@ -39,6 +41,7 @@
         {
           id: 'glass-break-pattern',
           label: 'แนวรอยแตก',
+          position: { x: 56, y: 69 },
           category: HOTSPOT_TYPES.USEFUL,
           resultTitle: 'แก้วแตกหลังผู้ตายล้ม',
           result: 'รอยกระจายของเศษแก้วเริ่มจากจุดกระแทกที่พื้น ไม่พบแรงบีบหรือรอยอาวุธ แก้วน่าจะหลุดจากมือเมื่อวิชาญทรุดตัว',
@@ -50,6 +53,7 @@
         {
           id: 'glass-old-fingerprint',
           label: 'รอยนิ้วมือบนก้านแก้ว',
+          position: { x: 64, y: 53 },
           category: HOTSPOT_TYPES.RED_HERRING,
           resultTitle: 'รอยนิ้วมือของภาคิน',
           result: 'มีรอยนิ้วมือบางส่วนของภาคิน แต่ป้านวลยืนยันว่าแก้วใบนี้ถูกใช้ในงานเลี้ยงครอบครัวเมื่อสัปดาห์ก่อน และเครื่องล้างแก้วเสีย รอยดังกล่าวจึงระบุเวลาไม่ได้',
@@ -61,6 +65,7 @@
         {
           id: 'glass-engraving',
           label: 'ตราสลักใต้ฐาน',
+          position: { x: 87, y: 55 },
           category: HOTSPOT_TYPES.FLAVOR,
           resultTitle: 'แก้วประจำตระกูล',
           result: 'ตัวอักษร “ธ” ใต้ฐานเป็นตราของชุดแก้วที่วิชาญสั่งทำเมื่อครบรอบบริษัท ไม่มีข้อมูลเชื่อมโยงกับการตาย',
@@ -75,11 +80,13 @@
       id: 'will-folder',
       title: 'แฟ้มพินัยกรรม',
       shortDescription: 'แฟ้มหนังบนโต๊ะมีร่างพินัยกรรมฉบับใหม่และเอกสารการเงินซ่อนอยู่',
+      image: '/assets/evidence/will-folder.jpg',
       icon: 'folder',
       hotspots: [
         {
           id: 'will-hidden-debt',
           label: 'ซองเอกสารในปกหลัง',
+          position: { x: 34, y: 40 },
           category: HOTSPOT_TYPES.CRITICAL,
           resultTitle: 'หนี้ลับของอารักษ์',
           result: 'ในซองมีสัญญากู้ที่อารักษ์ค้างชำระวิชาญจำนวนมาก พร้อมบันทึกว่าพินัยกรรมฉบับใหม่จะตัดสิทธิประโยชน์ของอารักษ์และเรียกหนี้คืนทันที',
@@ -91,6 +98,7 @@
         {
           id: 'will-signature-time',
           label: 'หน้าลงนาม',
+          position: { x: 63, y: 68 },
           category: HOTSPOT_TYPES.USEFUL,
           resultTitle: 'ยังขาดลายเซ็นพยาน',
           result: 'วิชาญลงชื่อไว้เวลา 21:35 น. แต่ช่องพยานยังว่าง พินัยกรรมจะสมบูรณ์ในเช้าวันถัดไป ทำให้คนที่กำลังเสียประโยชน์มีเวลาเหลือเพียงคืนนี้',
@@ -102,6 +110,7 @@
         {
           id: 'will-torn-corner',
           label: 'มุมกระดาษที่ฉีก',
+          position: { x: 72, y: 79 },
           category: HOTSPOT_TYPES.RED_HERRING,
           resultTitle: 'เศษกระดาษติดกระดุมมินตรา',
           result: 'เส้นใยตรงมุมคล้ายเศษที่ติดเสื้อมินตรา แต่เธอเป็นผู้จัดแฟ้มก่อนเริ่มอ่านพินัยกรรม จึงเป็นการสัมผัสตามหน้าที่และไม่บอกว่าเธอแก้เอกสาร',
@@ -113,6 +122,7 @@
         {
           id: 'will-watermark',
           label: 'ลายน้ำบนกระดาษ',
+          position: { x: 56, y: 43 },
           category: HOTSPOT_TYPES.FLAVOR,
           resultTitle: 'กระดาษสำนักงานกฎหมาย',
           result: 'ลายน้ำเป็นของสำนักงานกฎหมายที่ครอบครัวใช้มานาน ตรงกับกระดาษฉบับร่างอื่นทุกประการ',
@@ -127,11 +137,13 @@
       id: 'security-camera',
       title: 'กล้องวงจรปิด',
       shortDescription: 'เครื่องบันทึกภาพครอบคลุมโถงทางเดิน หน้าครัว และประตูห้องทำงาน',
+      image: '/assets/evidence/security-camera.jpg',
       icon: 'camera',
       hotspots: [
         {
           id: 'camera-arak-study',
           label: 'ช่วงเวลา 21:47 น.',
+          position: { x: 51, y: 55 },
           category: HOTSPOT_TYPES.CRITICAL,
           resultTitle: 'อารักษ์นำถาดเข้าไป',
           result: 'ภาพแสดงอารักษ์รับถาดไวน์จากโต๊ะพักแล้วเข้าห้องทำงานเพียงลำพัง เขาออกมาในอีกหกนาทีต่อมาโดยไม่มีถาด ทั้งที่ให้การว่าไม่เคยแตะไวน์',
@@ -143,6 +155,7 @@
         {
           id: 'camera-system-log',
           label: 'บันทึกระบบ 21:40–22:10 น.',
+          position: { x: 80, y: 76 },
           category: HOTSPOT_TYPES.USEFUL,
           resultTitle: 'กล้องดับจากแผงควบคุมภายใน',
           result: 'มีภาพขาดไป 84 วินาทีหลังอารักษ์ออกจากห้อง ระบบบันทึกว่าถูกสั่งพักจากแผงในห้องทำงาน ไม่ใช่ไฟดับทั้งบ้าน',
@@ -154,6 +167,7 @@
         {
           id: 'camera-garden-shadow',
           label: 'เงาร่างที่ประตูสวน',
+          position: { x: 20, y: 31 },
           category: HOTSPOT_TYPES.RED_HERRING,
           resultTitle: 'ศศินอยู่ใกล้สวน',
           result: 'เงาร่างคล้ายศศินผ่านประตูสวนเวลา 21:52 น. แต่กล้องอีกมุมยืนยันว่าเขาคุยโทรศัพท์อยู่ด้านนอกต่อเนื่องจน 22:16 น. และไม่ได้เข้าห้องทำงาน',
@@ -165,6 +179,7 @@
         {
           id: 'camera-clock-sync',
           label: 'สถานะเวลาของเครื่อง',
+          position: { x: 65, y: 77 },
           category: HOTSPOT_TYPES.FLAVOR,
           resultTitle: 'เวลาของกล้องเที่ยงตรง',
           result: 'เครื่องซิงก์เวลากับเราเตอร์ก่อนเกิดเหตุสองชั่วโมง ความคลาดเคลื่อนไม่เกินสามวินาที',
@@ -179,11 +194,13 @@
       id: 'wine-tray',
       title: 'ถาดไวน์',
       shortDescription: 'ถาดเงินถูกทิ้งไว้บนตู้เตี้ยในห้องทำงาน มีรอยแก้วสองวง',
+      image: '/assets/evidence/wine-tray.jpg',
       icon: 'tray',
       hotspots: [
         {
           id: 'tray-wax-mark',
           label: 'จุดขี้ผึ้งใต้หลุมวางแก้ว',
+          position: { x: 50, y: 69 },
           category: HOTSPOT_TYPES.CRITICAL,
           resultTitle: 'แก้วเป้าหมายถูกทำเครื่องหมาย',
           result: 'จุดขี้ผึ้งสีน้ำเงินถูกแต้มใต้ตำแหน่งแก้วของวิชาญ เศษขี้ผึ้งสีและสูตรเดียวกันติดอยู่ในช่องแหวนตราของอารักษ์ ทำให้เขาจำแก้วที่ใส่พิษได้',
@@ -195,6 +212,7 @@
         {
           id: 'tray-bottle-seal',
           label: 'ขวดและจุกไวน์',
+          position: { x: 37, y: 44 },
           category: HOTSPOT_TYPES.USEFUL,
           resultTitle: 'ไวน์ในขวดสะอาด',
           result: 'ซีลขวดและไวน์ที่เหลือไม่พบสารพิษ ยืนยันว่าคนร้ายไม่ได้วางยาแขกทุกคน แต่จัดการกับแก้วของวิชาญหลังรินแล้ว',
@@ -206,6 +224,7 @@
         {
           id: 'tray-mintra-print',
           label: 'รอยนิ้วมือบนขอบถาด',
+          position: { x: 39, y: 73 },
           category: HOTSPOT_TYPES.RED_HERRING,
           resultTitle: 'รอยนิ้วมือของมินตรา',
           result: 'รอยของมินตราชัดเจน แต่ภาพจากครัวยืนยันว่าเธอเป็นคนจัดถาดตามคำสั่งป้านวล ก่อนอารักษ์จะรับถาดไป การพบรอยจึงสอดคล้องกับงานของเธอ',
@@ -217,6 +236,7 @@
         {
           id: 'tray-silver-pattern',
           label: 'ลายสลักบนถาด',
+          position: { x: 80, y: 58 },
           category: HOTSPOT_TYPES.FLAVOR,
           resultTitle: 'ของขวัญวันแต่งงาน',
           result: 'ข้อความใต้ถาดระบุว่าเป็นของขวัญวันแต่งงานของวิชาญเมื่อสามสิบปีก่อน ไม่มีช่องลับหรือรอยดัดแปลง',
@@ -231,11 +251,13 @@
       id: 'nuan-testimony',
       title: 'คำให้การของป้านวล',
       shortDescription: 'แม่บ้านเก่าแก่เห็นการเตรียมไวน์และได้ยินบทสนทนาก่อนเกิดเหตุ',
+      image: '/assets/evidence/aunt-nuan-statement.jpg',
       icon: 'statement',
       hotspots: [
         {
           id: 'nuan-overheard-threat',
           label: 'คำโต้เถียงหลังประตู',
+          position: { x: 57, y: 81 },
           category: HOTSPOT_TYPES.CRITICAL,
           resultTitle: '“พรุ่งนี้ผมจะหมดทุกอย่าง”',
           result: 'ป้านวลจำเสียงอารักษ์ได้ เขาพูดกับวิชาญว่า “ถ้าพินัยกรรมใหม่นี้ลงนาม พรุ่งนี้ผมจะหมดทุกอย่าง” ก่อนจะเดินออกมาพร้อมกำแหวนตราของตนแน่น',
@@ -247,6 +269,7 @@
         {
           id: 'nuan-private-meeting',
           label: 'ลำดับแขกที่เข้าพบ',
+          position: { x: 36, y: 89 },
           category: HOTSPOT_TYPES.USEFUL,
           resultTitle: 'อารักษ์พบผู้ตายเป็นคนสุดท้าย',
           result: 'วิชาญขอคุยเรื่องเอกสารกับอารักษ์ตามลำพังหลัง 21:45 น. คนอื่นถูกขอให้อยู่ในห้องรับแขก ยกเว้นศศินที่ออกไปรับโทรศัพท์ในสวน',
@@ -258,6 +281,7 @@
         {
           id: 'nuan-wrong-chime',
           label: 'เสียงนาฬิกาที่ป้านวลจำได้',
+          position: { x: 81, y: 14 },
           category: HOTSPOT_TYPES.RED_HERRING,
           resultTitle: 'เวลาในคำให้การคลาดเคลื่อน',
           result: 'ป้านวลคิดว่าได้ยินเสียงทะเลาะตอนสี่ทุ่ม ซึ่งอาจพาดพิงภาคิน แต่ช่างนาฬิกายืนยันว่านาฬิกาโถงตีช้าสิบห้านาที เวลาจริงคือ 21:45 น.',
@@ -269,6 +293,7 @@
         {
           id: 'nuan-dessert',
           label: 'รายการของหวาน',
+          position: { x: 83, y: 78 },
           category: HOTSPOT_TYPES.FLAVOR,
           resultTitle: 'ของหวานยังไม่ได้เสิร์ฟ',
           result: 'บัวลอยที่ป้านวลเตรียมไว้ยังอยู่ครบในครัว ไม่มีส่วนผสมต้องสงสัย และไม่มีใครกินก่อนเกิดเหตุ',
@@ -283,11 +308,13 @@
       id: 'study-room',
       title: 'ห้องทำงาน',
       shortDescription: 'สถานที่พบศพ ประตูเปิดแง้ม โต๊ะทำงานยังเปิดโคมไฟไว้',
+      image: '/assets/evidence/study-room.jpg',
       icon: 'room',
       hotspots: [
         {
           id: 'study-desk-drawer',
           label: 'ลิ้นชักโต๊ะที่ล็อกไม่สนิท',
+          position: { x: 43, y: 59 },
           category: HOTSPOT_TYPES.CRITICAL,
           resultTitle: 'รอยซองหนี้ถูกค้น',
           result: 'ฝุ่นในลิ้นชักเป็นกรอบว่างขนาดเดียวกับซองสัญญากู้ในแฟ้มพินัยกรรม และมีรอยถุงมือสด ๆ อารักษ์รู้ตำแหน่งลิ้นชักจากการดูแลบัญชีให้วิชาญ',
@@ -299,6 +326,7 @@
         {
           id: 'study-door-window',
           label: 'ประตูและหน้าต่าง',
+          position: { x: 17, y: 31 },
           category: HOTSPOT_TYPES.USEFUL,
           resultTitle: 'ไม่มีทางเข้าจากสวน',
           result: 'หน้าต่างถูกกลอนจากด้านในและฝุ่นบนขอบไม่ถูกรบกวน คนที่เข้าออกต้องผ่านประตูโถงซึ่งอยู่ในภาพกล้อง',
@@ -310,6 +338,7 @@
         {
           id: 'study-muddy-print',
           label: 'รอยรองเท้าเปื้อนดิน',
+          position: { x: 34, y: 85 },
           category: HOTSPOT_TYPES.RED_HERRING,
           resultTitle: 'รอยรองเท้าของศศิน',
           result: 'รอยดินตรงพรมเป็นรองเท้าศศินจริง แต่ดินแห้งและถูกเส้นใยพรมทับ แสดงว่าเกิดตั้งแต่เขาเข้าพบวิชาญตอนบ่าย ไม่ใช่ในช่วงฆาตกรรม',
@@ -321,6 +350,7 @@
         {
           id: 'study-record-player',
           label: 'เครื่องเล่นแผ่นเสียง',
+          position: { x: 9, y: 43 },
           category: HOTSPOT_TYPES.FLAVOR,
           resultTitle: 'เพลงโปรดหยุดกลางแผ่น',
           result: 'เข็มค้างอยู่บนเพลงโปรดของวิชาญ ฝุ่นรอบเครื่องสม่ำเสมอ ไม่มีร่องรอยว่าถูกใช้ซ่อนสิ่งของ',
@@ -335,11 +365,14 @@
       id: 'kitchen',
       title: 'ห้องครัว',
       shortDescription: 'จุดเตรียมถาดไวน์ มีอ่างล้างจาน ตู้เครื่องเทศ และสมุดเวรคนรับใช้',
+      image: '/assets/evidence/kitchen.jpg',
+      imageRatio: '1619 / 971',
       icon: 'kitchen',
       hotspots: [
         {
           id: 'kitchen-drain-residue',
           label: 'ตะแกรงอ่างล้างจาน',
+          position: { x: 86, y: 84 },
           category: HOTSPOT_TYPES.CRITICAL,
           resultTitle: 'สารชนิดเดียวกับพิษในแก้ว',
           result: 'พบผงอัลคาลอยด์ชนิดเดียวกับในแก้วติดตะแกรง พร้อมเส้นใยจากผ้าเช็ดหน้าสีน้ำเงิน ป้านวลเห็นอารักษ์ล้างมือและผ้าเช็ดหน้าตรงนี้หลังออกจากห้องทำงาน',
@@ -351,6 +384,7 @@
         {
           id: 'kitchen-duty-log',
           label: 'สมุดเวรและเวลาจัดถาด',
+          position: { x: 36, y: 63 },
           category: HOTSPOT_TYPES.USEFUL,
           resultTitle: 'มินตราส่งต่อถาดโดยไม่ได้เข้าห้องทำงาน',
           result: 'บันทึกและภาพหน้าครัวตรงกัน: มินตราจัดถาดเวลา 21:42 น. ป้านวลตรวจขวด แล้วอารักษ์อาสานำถาดไปให้วิชาญเวลา 21:47 น.',
@@ -362,6 +396,7 @@
         {
           id: 'kitchen-bitter-herb',
           label: 'ขวดสมุนไพรรสขม',
+          position: { x: 66, y: 39 },
           category: HOTSPOT_TYPES.RED_HERRING,
           resultTitle: 'สมุนไพรของป้านวลไม่ใช่พิษ',
           result: 'ขวดติดชื่อป้านวลและมีกลิ่นขม แต่ผลตรวจเป็นยาหอมพื้นบ้านที่ไม่เป็นพิษ แม้ใช้ปริมาณสูงก็ไม่ตรงกับสารในเลือดผู้ตาย',
@@ -373,6 +408,7 @@
         {
           id: 'kitchen-menu-board',
           label: 'กระดานรายการอาหาร',
+          position: { x: 23, y: 14 },
           category: HOTSPOT_TYPES.FLAVOR,
           resultTitle: 'มื้อเย็นธรรมดา',
           result: 'เมนูทั้งหมดตรงกับวัตถุดิบและไม่มีแขกคนใดมีอาการผิดปกติ จึงไม่น่าเป็นการปนเปื้อนจากอาหารร่วมกัน',
@@ -387,11 +423,14 @@
       id: 'forensic-report',
       title: 'รายงานนิติเวช',
       shortDescription: 'รายงานชันสูตรเบื้องต้นระบุเวลาและสาเหตุการเสียชีวิต',
+      image: '/assets/evidence/forensic-report.jpg',
+      imageRatio: '1672 / 941',
       icon: 'forensics',
       hotspots: [
         {
           id: 'forensic-toxicology',
           label: 'ผลพิษวิทยา',
+          position: { x: 69, y: 55 },
           category: HOTSPOT_TYPES.CRITICAL,
           resultTitle: 'เสียชีวิตจากไวน์ผสมยาพิษ',
           result: 'เลือดและไวน์ในกระเพาะมีอัลคาลอยด์ออกฤทธิ์ต่อหัวใจเข้มข้นถึงตาย สารละลายได้ดีในแอลกอฮอล์ และไม่พบในอาหารหรือขวดไวน์ที่เหลือ',
@@ -403,6 +442,7 @@
         {
           id: 'forensic-death-window',
           label: 'ช่วงเวลาเสียชีวิต',
+          position: { x: 34, y: 42 },
           category: HOTSPOT_TYPES.USEFUL,
           resultTitle: 'พิษออกฤทธิ์หลังดื่ม 15–25 นาที',
           result: 'อุณหภูมิร่างกายและการดูดซึมระบุว่าเขาดื่มสารพิษราว 21:50–21:58 น. และเสียชีวิตประมาณ 22:15 น. ตรงกับช่วงหลังอารักษ์นำถาดเข้าไป',
@@ -414,6 +454,7 @@
         {
           id: 'forensic-head-bruise',
           label: 'รอยฟกช้ำที่ขมับ',
+          position: { x: 49, y: 69 },
           category: HOTSPOT_TYPES.RED_HERRING,
           resultTitle: 'บาดแผลเกิดจากการล้ม',
           result: 'รอยฟกช้ำดูเหมือนถูกตี แต่ไม่มีเลือดออกในสมองและมุมกระแทกตรงกับขอบโต๊ะ เกิดหลังพิษเริ่มทำให้หมดแรง ไม่ใช่สาเหตุการตาย',
@@ -425,6 +466,7 @@
         {
           id: 'forensic-jacket-fiber',
           label: 'เส้นใยบนเสื้อผู้ตาย',
+          position: { x: 22, y: 73 },
           category: HOTSPOT_TYPES.FLAVOR,
           resultTitle: 'เส้นใยจากผ้าห่มฉุกเฉิน',
           result: 'เส้นใยสีเทามาจากผ้าห่มที่ภาคินใช้คลุมร่างหลังพบศพ ไม่ได้ติดอยู่ก่อนเสียชีวิต',

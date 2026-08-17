@@ -35,7 +35,7 @@
   if (!activeProfileId || !store.profiles[activeProfileId]) {
     activeProfileId = null;
     view = 'home';
-  } else if (view === 'investigation' && !getActiveProfile().activeCase) {
+  } else if ((view === 'investigation' || view === 'board') && !getActiveProfile().activeCase) {
     view = 'dashboard';
   }
 
@@ -97,11 +97,17 @@
 
   function repairCaseState(caseState) {
     if (!caseState || typeof caseState !== 'object' || caseState.caseId !== caseData.id) return null;
-    const deductions = caseState.deductions && typeof caseState.deductions === 'object'
+    const sourceDeductions = caseState.deductions && typeof caseState.deductions === 'object' && !Array.isArray(caseState.deductions)
       ? caseState.deductions
-      : createEmptyDeductions();
-    caseData.suspects.forEach(function ensureSuspect(suspect) {
-      if (!deductions[suspect]) deductions[suspect] = { status: 'unknown', notes: '' };
+      : {};
+    const deductions = createEmptyDeductions();
+    caseData.suspects.forEach(function repairSuspectRecord(suspect) {
+      const source = sourceDeductions[suspect];
+      if (!source || typeof source !== 'object' || Array.isArray(source)) return;
+      deductions[suspect] = {
+        status: ['unknown', 'watch', 'prime', 'cleared'].includes(source.status) ? source.status : 'unknown',
+        notes: typeof source.notes === 'string' ? source.notes.slice(0, 2000) : ''
+      };
     });
     return {
       caseId: caseData.id,
@@ -288,11 +294,23 @@
   }
 
   function render() {
+    const profile = getActiveProfile();
+    if (activeProfileId && !profile) {
+      activeProfileId = null;
+      view = 'home';
+      sessionStorage.removeItem(SESSION_PROFILE_KEY);
+      sessionStorage.setItem(SESSION_VIEW_KEY, view);
+    } else if ((view === 'investigation' || view === 'board') && profile && !profile.activeCase) {
+      view = 'dashboard';
+      sessionStorage.setItem(SESSION_VIEW_KEY, view);
+    }
     renderHeader();
     if (view === 'dashboard' && getActiveProfile()) {
       renderDashboard();
     } else if (view === 'investigation' && getActiveProfile() && getActiveProfile().activeCase) {
       renderInvestigation();
+    } else if (view === 'board' && getActiveProfile() && getActiveProfile().activeCase) {
+      renderBoardPage();
     } else {
       view = 'home';
       renderHome();
@@ -312,7 +330,7 @@
           : '<span class="save-dot"></span> บันทึกแล้วในเครื่อง') +
       '</span>' +
       '<span class="header-profile"><span>สายสืบ</span> <strong>' + escapeHtml(profile.name) + '</strong></span>' +
-      (view === 'investigation'
+      (view === 'investigation' || view === 'board'
         ? '<button class="button button-ghost" type="button" data-action="dashboard">แดชบอร์ด</button>'
         : '') +
       '<button class="button button-ghost" type="button" data-action="switch-profile">สลับโปรไฟล์</button>';
@@ -476,7 +494,7 @@
         '<div class="case-banner">' +
           '<div class="case-banner-title"><span class="section-kicker">Case 001 · Investigation active</span><h1>' + escapeHtml(caseData.title) + '</h1><p>ผู้เสียชีวิต <strong>' + escapeHtml(caseData.victim) + '</strong></p></div>' +
           '<div class="action-meter' + (caseState.actionsLeft <= 3 ? ' danger' : '') + '" aria-label="เหลือ ' + caseState.actionsLeft + ' แอ็กชัน"><strong class="action-number">' + caseState.actionsLeft + '</strong><span class="action-label">actions<br />remaining</span></div>' +
-          '<button class="button button-danger" type="button" data-action="open-accusation">สรุปคดีและกล่าวหา</button>' +
+          '<div class="case-banner-actions"><button class="button button-secondary" type="button" data-action="open-board">เปิดกระดานสรุป</button><button class="button button-danger" type="button" data-action="open-accusation">สรุปคดีและกล่าวหา</button></div>' +
         '</div>' +
         '<div class="intel-strip">' +
           '<div class="intel-group"><span class="intel-group-label">ผู้ต้องสงสัย</span><span class="intel-items">' + caseData.suspects.map(renderPersonChip).join('') + '</span></div>' +
@@ -490,10 +508,15 @@
           '<section class="evidence-workbench" aria-labelledby="selected-evidence-title">' +
             '<div class="workbench-heading"><div class="workbench-heading-copy"><span class="section-kicker">Evidence ' + padEvidenceNumber(caseData.evidence.indexOf(selectedEvidence) + 1) + '</span><h2 id="selected-evidence-title">' + escapeHtml(selectedEvidence.title) + '</h2></div><span class="status-chip">' + openedForSelected.length + '/' + selectedEvidence.hotspots.length + ' ตรวจแล้ว</span></div>' +
             '<div class="workbench-content">' +
-              '<div class="evidence-visual" role="img" aria-label="ภาพแทนหลักฐาน ' + escapeAttribute(selectedEvidence.title) + '"><span class="evidence-symbol">' + escapeHtml(getEvidenceSymbol(selectedEvidence.icon)) + '</span></div>' +
+              '<div class="inspection-instruction"><span class="radar-dot" aria-hidden="true"></span><span><strong>ภาพขยายพร้อมตรวจสอบ</strong> แตะวงกลมบนภาพเพื่อเปิดเบาะแส — แต่ละจุดใช้ 1 แอ็กชัน</span></div>' +
+              '<div class="evidence-photo-stage" id="evidence-photo-stage" tabindex="-1" style="aspect-ratio:' + escapeAttribute(selectedEvidence.imageRatio || '3 / 2') + '" aria-label="ภาพขยายหลักฐาน ' + escapeAttribute(selectedEvidence.title) + '">' +
+                '<img src="' + escapeAttribute(selectedEvidence.image) + '" alt="' + escapeAttribute(selectedEvidence.shortDescription) + '" />' +
+                '<span class="photo-scanline" aria-hidden="true"></span>' +
+                selectedEvidence.hotspots.map(function renderPhotoHotspot(hotspot, index) { return renderImageHotspot(hotspot, index, selectedEvidence.id, caseState); }).join('') +
+                '<span class="photo-caption">EVIDENCE ' + padEvidenceNumber(caseData.evidence.indexOf(selectedEvidence) + 1) + ' · ' + escapeHtml(selectedEvidence.title) + '</span>' +
+              '</div>' +
               '<p class="evidence-description">' + escapeHtml(selectedEvidence.shortDescription) + '</p>' +
-              '<div class="inspection-divider">เลือกจุดตรวจสอบ</div>' +
-              '<div class="hotspot-list">' + selectedEvidence.hotspots.map(function renderHotspotItem(hotspot, index) { return renderHotspot(hotspot, index, selectedEvidence.id, caseState); }).join('') + '</div>' +
+              '<div class="hotspot-key-list" aria-label="รายการจุดตรวจสอบ">' + selectedEvidence.hotspots.map(function renderHotspotKey(hotspot, index) { return '<span class="hotspot-key' + (isHotspotOpened(caseState, selectedEvidence.id, hotspot.id) ? ' opened' : '') + '"><b>' + (index + 1) + '</b>' + escapeHtml(hotspot.label) + '</span>'; }).join('') + '</div>' +
               (caseState.actionsLeft === 0 ? '<div class="no-actions-notice" role="status">แอ็กชันหมดแล้ว คุณยังทบทวนสมุดหลักฐานและกระดานอนุมานได้ จากนั้นส่งคำกล่าวหาเพื่อปิดคดี</div>' : '') +
               (latestHotspot ? renderOpenedResult(latestHotspot, selectedEvidence.title) : '') +
             '</div>' +
@@ -518,20 +541,22 @@
     const openedCount = caseState.opened.filter(function countOpened(entry) { return entry.evidenceId === evidenceItem.id; }).length;
     const label = openedCount === 0 ? 'ยังไม่ได้ตรวจ' : 'ตรวจแล้ว ' + openedCount + '/' + evidenceItem.hotspots.length;
     return '<button class="evidence-item' + (selectedId === evidenceItem.id ? ' selected' : '') + '" type="button" data-evidence-id="' + escapeAttribute(evidenceItem.id) + '" aria-pressed="' + (selectedId === evidenceItem.id) + '">' +
-      '<span class="evidence-index">' + padEvidenceNumber(index + 1) + '</span>' +
+      '<span class="evidence-thumb"><img src="' + escapeAttribute(evidenceItem.image) + '" alt="" loading="lazy" /><span class="evidence-index">' + padEvidenceNumber(index + 1) + '</span><span class="evidence-check' + (openedCount ? '' : ' unopened') + '" aria-hidden="true">' + (openedCount ? '●' : '○') + '</span></span>' +
       '<span class="evidence-item-text"><strong>' + escapeHtml(evidenceItem.title) + '</strong><small>' + label + '</small></span>' +
-      '<span class="evidence-check' + (openedCount ? '' : ' unopened') + '" aria-hidden="true">' + (openedCount ? '●' : '○') + '</span>' +
     '</button>';
   }
 
-  function renderHotspot(hotspot, index, evidenceId, caseState) {
+  function renderImageHotspot(hotspot, index, evidenceId, caseState) {
     const opened = isHotspotOpened(caseState, evidenceId, hotspot.id);
     const noActions = caseState.actionsLeft <= 0;
     const disabled = !opened && noActions;
-    return '<button class="hotspot-button' + (opened ? ' opened' : '') + '" type="button" data-evidence-id="' + escapeAttribute(evidenceId) + '" data-hotspot-id="' + escapeAttribute(hotspot.id) + '"' + (disabled ? ' disabled' : '') + '>' +
-      '<span class="hotspot-number">' + (opened ? '✓' : index + 1) + '</span>' +
-      '<span class="hotspot-name">' + escapeHtml(hotspot.label) + '</span>' +
-      '<span class="hotspot-cost">' + (opened ? 'เปิดอ่านอีกครั้ง' : 'ใช้ 1 แอ็กชัน') + '</span>' +
+    const position = hotspot.position || { x: 50, y: 50 };
+    const actionCopy = opened ? 'เปิดอ่านอีกครั้งโดยไม่ใช้แอ็กชัน' : 'ใช้ 1 แอ็กชัน';
+    const edgeClass = (Number(position.x) < 20 ? ' edge-left' : Number(position.x) > 80 ? ' edge-right' : '') +
+      (Number(position.y) < 23 ? ' edge-top' : '');
+    return '<button class="image-hotspot' + (opened ? ' opened' : '') + edgeClass + '" style="left:' + Number(position.x) + '%;top:' + Number(position.y) + '%" type="button" data-evidence-id="' + escapeAttribute(evidenceId) + '" data-hotspot-id="' + escapeAttribute(hotspot.id) + '" aria-label="จุดตรวจ ' + (index + 1) + ': ' + escapeAttribute(hotspot.label) + ' — ' + actionCopy + '"' + (disabled ? ' disabled' : '') + '>' +
+      '<span class="hotspot-radar" aria-hidden="true"></span><span class="hotspot-marker">' + (opened ? '✓' : index + 1) + '</span>' +
+      '<span class="hotspot-tooltip"><strong>' + escapeHtml(hotspot.label) + '</strong><small>' + actionCopy + '</small></span>' +
     '</button>';
   }
 
@@ -571,6 +596,147 @@
       '</article>';
     }).join('');
     return '<p class="deduction-tip">จัดสถานะผู้ต้องสงสัยและจดเหตุผล กระดานนี้เป็นของสายสืบ ' + escapeHtml(getActiveProfile().name) + ' เท่านั้น</p><div class="deduction-list">' + cards + '</div>';
+  }
+
+  function renderBoardPage() {
+    const profile = getActiveProfile();
+    const caseState = profile.activeCase;
+    const boardData = buildBoardConnections(caseState);
+    document.title = 'กระดานสรุป · ' + caseData.title;
+
+    appRoot.innerHTML =
+      '<section class="board-page">' +
+        renderStorageWarning() +
+        '<header class="board-toolbar">' +
+          '<div><span class="section-kicker">Detective link board</span><h1 id="board-title" tabindex="-1">กระดานสรุปคดี</h1><p>' + escapeHtml(caseData.title) + ' · แฟ้มของสายสืบ ' + escapeHtml(profile.name) + '</p></div>' +
+          '<div class="board-toolbar-actions"><span class="board-action-count"><strong>' + caseState.actionsLeft + '</strong> แอ็กชันคงเหลือ</span><button class="button button-secondary" type="button" data-action="back-investigation">กลับไปตรวจหลักฐาน</button><button class="button button-danger" type="button" data-action="open-accusation">สรุปคดีและกล่าวหา</button></div>' +
+        '</header>' +
+        '<div class="board-legend"><span><i class="legend-string critical"></i>หลักฐานชี้ขาด</span><span><i class="legend-string useful"></i>ข้อมูลเชื่อมโยง</span><span><i class="legend-string uncertain"></i>ข้อมูลยังไม่ยืนยัน</span><span class="board-legend-stat">พบความเชื่อมโยง ' + boardData.lineCount + ' เส้น</span></div>' +
+        '<div class="board-scroll-shell" tabindex="0" aria-label="กระดานสืบสวนแบบเลื่อนได้">' +
+          '<div class="investigation-board">' +
+            '<span class="board-vignette" aria-hidden="true"></span>' +
+            boardData.strings +
+            renderVictimBoardNode() +
+            caseData.suspectProfiles.map(function renderSuspectNode(suspect, index) { return renderBoardSuspect(suspect, index, caseState); }).join('') +
+            caseData.evidence.map(function renderEvidenceNode(evidenceItem) { return renderBoardEvidence(evidenceItem, caseState); }).join('') +
+          '</div>' +
+        '</div>' +
+        '<div class="sr-only" aria-live="polite">' + boardData.connections.map(function describeConnection(item) { return escapeHtml(item.evidenceTitle + ' เชื่อมกับ ' + item.suspect); }).join(' · ') + '</div>' +
+        '<section class="board-notes-section" aria-labelledby="board-notes-title"><div class="board-notes-heading"><div><span class="section-kicker">Suspect notes</span><h2 id="board-notes-title">บันทึกผู้ต้องสงสัย</h2></div><p>สถานะและโน้ตจะบันทึกลงโปรไฟล์นี้ทันที</p></div>' + renderDeductionBoard(caseState) + '</section>' +
+      '</section>';
+  }
+
+  function boardLayout() {
+    return {
+      width: 1180,
+      height: 860,
+      victim: { left: 470, top: 285, width: 240, height: 120 },
+      suspects: {
+        phakin: { left: 35, top: 30, width: 150, height: 190 },
+        mintra: { left: 265, top: 30, width: 150, height: 190 },
+        arak: { left: 495, top: 24, width: 150, height: 198 },
+        nuan: { left: 725, top: 30, width: 150, height: 190 },
+        sasin: { left: 955, top: 30, width: 150, height: 190 }
+      },
+      evidence: {
+        'broken-wine-glass': { left: 45, top: 415, width: 155, height: 142 },
+        'will-folder': { left: 250, top: 535, width: 155, height: 142 },
+        'security-camera': { left: 395, top: 410, width: 155, height: 142 },
+        'wine-tray': { left: 610, top: 535, width: 155, height: 142 },
+        'nuan-testimony': { left: 830, top: 410, width: 155, height: 142 },
+        'study-room': { left: 35, top: 665, width: 155, height: 142 },
+        kitchen: { left: 510, top: 675, width: 155, height: 142 },
+        'forensic-report': { left: 975, top: 660, width: 155, height: 142 }
+      }
+    };
+  }
+
+  function buildBoardConnections(caseState) {
+    const layout = boardLayout();
+    const pairs = new Map();
+    const evidenceCategories = new Map();
+    const priority = { critical: 4, useful: 3, red_herring: 2, flavor: 1 };
+
+    caseState.opened.forEach(function collectOpenedLink(entry) {
+      const evidenceItem = Cases.getEvidenceById(caseData, entry.evidenceId);
+      const hotspot = Cases.getHotspotById(caseData, entry.evidenceId, entry.hotspotId);
+      if (!evidenceItem || !hotspot) return;
+      const currentEvidenceCategory = evidenceCategories.get(entry.evidenceId);
+      if (!currentEvidenceCategory || priority[hotspot.category] > priority[currentEvidenceCategory]) {
+        evidenceCategories.set(entry.evidenceId, hotspot.category);
+      }
+      (hotspot.relatedSuspects || []).forEach(function addPair(suspect) {
+        const key = entry.evidenceId + ':' + suspect;
+        const current = pairs.get(key);
+        if (!current || priority[hotspot.category] > priority[current.category]) {
+          pairs.set(key, { evidenceId: entry.evidenceId, evidenceTitle: evidenceItem.title, suspect: suspect, category: hotspot.category });
+        }
+      });
+    });
+
+    const connections = Array.from(pairs.values());
+    const strings = [];
+    connections.forEach(function connectionString(connection) {
+      const evidencePosition = layout.evidence[connection.evidenceId];
+      const suspectProfile = caseData.suspectProfiles.find(function matchSuspect(item) { return item.name === connection.suspect; });
+      const suspectPosition = suspectProfile ? layout.suspects[suspectProfile.id] : null;
+      if (!evidencePosition || !suspectPosition) return;
+      strings.push(renderBoardString(nodeCenter(evidencePosition), nodeCenter(suspectPosition), connection.category));
+    });
+
+    Array.from(new Set(caseState.opened.map(function openedEvidenceId(entry) { return entry.evidenceId; }))).forEach(function victimString(evidenceId) {
+      const evidencePosition = layout.evidence[evidenceId];
+      if (evidencePosition) strings.push(renderBoardString(
+        nodeCenter(evidencePosition),
+        nodeCenter(layout.victim),
+        evidenceCategories.get(evidenceId) || 'flavor'
+      ));
+    });
+
+    return { connections: connections, strings: strings.join(''), lineCount: strings.length };
+  }
+
+  function nodeCenter(position) {
+    return { x: position.left + position.width / 2, y: position.top + position.height / 2 };
+  }
+
+  function renderBoardString(from, to, category) {
+    const deltaX = to.x - from.x;
+    const deltaY = to.y - from.y;
+    const length = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    const angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+    const lineClass = category === 'critical'
+      ? 'critical'
+      : category === 'useful'
+        ? 'useful'
+        : 'uncertain';
+    return '<span class="board-string ' + lineClass + '" aria-hidden="true" style="left:' + from.x + 'px;top:' + from.y + 'px;width:' + length.toFixed(1) + 'px;transform:rotate(' + angle.toFixed(2) + 'deg)"></span>';
+  }
+
+  function renderVictimBoardNode() {
+    const position = boardLayout().victim;
+    return '<article class="board-victim-node" style="left:' + position.left + 'px;top:' + position.top + 'px"><span class="board-pin brass" aria-hidden="true"></span><span class="board-file-label">VICTIM / CASE 001</span><strong>' + escapeHtml(caseData.victim) + '</strong><small>เสียชีวิตใน ' + escapeHtml(caseData.solutionLabels.location) + '</small><span class="case-stamp">DECEASED</span></article>';
+  }
+
+  function renderBoardSuspect(suspect, index, caseState) {
+    const position = boardLayout().suspects[suspect.id];
+    const deduction = caseState.deductions[suspect.name] || { status: 'unknown', notes: '' };
+    return '<article class="board-suspect-node status-' + escapeAttribute(deduction.status) + '" data-board-suspect-id="' + escapeAttribute(suspect.id) + '" style="left:' + position.left + 'px;top:' + position.top + 'px">' +
+      '<span class="board-pin red" aria-hidden="true"></span><div class="suspect-photo" style="--portrait-position:' + (index * 25) + '%" role="img" aria-label="ภาพผู้ต้องสงสัย ' + escapeAttribute(suspect.name) + '"></div>' +
+      '<div class="suspect-polaroid-copy"><strong>' + escapeHtml(suspect.name) + '</strong><small>' + escapeHtml(suspect.role) + '</small></div><span class="board-status-label">' + escapeHtml(deductionStatusLabel(deduction.status)) + '</span>' +
+    '</article>';
+  }
+
+  function renderBoardEvidence(evidenceItem, caseState) {
+    const position = boardLayout().evidence[evidenceItem.id];
+    const openedCount = caseState.opened.filter(function matchEvidence(entry) { return entry.evidenceId === evidenceItem.id; }).length;
+    return '<button class="board-evidence-node' + (openedCount ? ' revealed' : '') + '" style="left:' + position.left + 'px;top:' + position.top + 'px" type="button" data-board-evidence-id="' + escapeAttribute(evidenceItem.id) + '" aria-label="เปิดหลักฐาน ' + escapeAttribute(evidenceItem.title) + '">' +
+      '<span class="board-pin dark" aria-hidden="true"></span><img src="' + escapeAttribute(evidenceItem.image) + '" alt="" loading="lazy" /><span class="board-evidence-copy"><strong>' + escapeHtml(evidenceItem.title) + '</strong><small>' + (openedCount ? 'เปิดแล้ว ' + openedCount + '/' + evidenceItem.hotspots.length : 'ยังไม่ตรวจ') + '</small></span>' +
+    '</button>';
+  }
+
+  function deductionStatusLabel(status) {
+    return { unknown: 'ยังไม่แน่ใจ', watch: 'ต้องจับตา', prime: 'ผู้ต้องสงสัยหลัก', cleared: 'ตัดออก' }[status] || 'ยังไม่แน่ใจ';
   }
 
   function renderStatusOptions(selected) {
@@ -660,9 +826,24 @@
     profile.updatedAt = profile.activeCase.updatedAt;
     if (!saveStore({ silent: true })) {
       store.profiles[activeProfileId] = previousProfile;
-      renderInvestigation();
+      render();
       showToast('ไม่แก้กระดานอนุมาน เพราะบันทึกไม่สำเร็จ', 'error', 5000);
+      return;
     }
+    if (view === 'board' && field === 'status') {
+      updateBoardSuspectStatus(suspectName, record.status);
+    }
+  }
+
+  function updateBoardSuspectStatus(suspectName, status) {
+    const suspect = caseData.suspectProfiles.find(function findSuspectProfile(item) { return item.name === suspectName; });
+    if (!suspect) return;
+    const node = document.querySelector('[data-board-suspect-id="' + suspect.id + '"]');
+    if (!node) return;
+    node.classList.remove('status-unknown', 'status-watch', 'status-prime', 'status-cleared');
+    node.classList.add('status-' + status);
+    const label = node.querySelector('.board-status-label');
+    if (label) label.textContent = deductionStatusLabel(status);
   }
 
   function openAccusation() {
@@ -916,6 +1097,20 @@
     }, 10);
   }
 
+  function focusEvidenceStage() {
+    window.setTimeout(function focusStageAfterRender() {
+      const stage = document.getElementById('evidence-photo-stage');
+      if (stage) stage.focus({ preventScroll: false });
+    }, 20);
+  }
+
+  function focusBoardHeading() {
+    window.setTimeout(function focusBoardAfterRender() {
+      const heading = document.getElementById('board-title');
+      if (heading) heading.focus({ preventScroll: true });
+    }, 20);
+  }
+
   function focusSideTab(tabName) {
     window.setTimeout(function restoreTabFocus() {
       const tab = document.getElementById(tabName + '-tab');
@@ -999,19 +1194,6 @@
     }[category] || 'บันทึกหลักฐาน';
   }
 
-  function getEvidenceSymbol(icon) {
-    return {
-      'wine-glass': '◇',
-      folder: 'F',
-      camera: '◉',
-      tray: '▱',
-      statement: '“',
-      room: '⌂',
-      kitchen: 'K',
-      forensics: '✦'
-    }[icon] || '?';
-  }
-
   function findOptionLabel(items, value) {
     const option = items.find(function findItem(item) { return item.value === value; });
     return option ? option.label : value;
@@ -1078,6 +1260,14 @@
       const action = actionButton.dataset.action;
       if (action === 'switch-profile') leaveProfile();
       if (action === 'dashboard') navigate('dashboard');
+      if (action === 'open-board') {
+        navigate('board');
+        focusBoardHeading();
+      }
+      if (action === 'back-investigation') {
+        navigate('investigation');
+        focusEvidenceStage();
+      }
       if (action === 'reset-corrupt-storage') resetCorruptStorage();
       if (action === 'retry-storage') retryStorage();
       if (action === 'start-case') startCase(true);
@@ -1102,6 +1292,23 @@
       return;
     }
 
+    const boardEvidenceButton = event.target.closest('[data-board-evidence-id]');
+    if (boardEvidenceButton && view === 'board') {
+      const profile = getActiveProfile();
+      const previousProfile = cloneData(profile);
+      profile.activeCase.selectedEvidenceId = boardEvidenceButton.dataset.boardEvidenceId;
+      profile.activeCase.updatedAt = new Date().toISOString();
+      if (!saveStore({ silent: true })) {
+        store.profiles[activeProfileId] = previousProfile;
+        showToast('เปิดหลักฐานนี้ไม่ได้ เพราะบันทึกสถานะไม่สำเร็จ', 'error', 5000);
+        return;
+      }
+      selectedResultKey = null;
+      navigate('investigation');
+      focusEvidenceStage();
+      return;
+    }
+
     const evidenceButton = event.target.closest('[data-evidence-id]:not([data-hotspot-id])');
     if (evidenceButton && view === 'investigation') {
       const profile = getActiveProfile();
@@ -1118,7 +1325,7 @@
         return;
       }
       renderInvestigation();
-      focusEvidenceControl(evidenceButton.dataset.evidenceId);
+      focusEvidenceStage();
       return;
     }
 
