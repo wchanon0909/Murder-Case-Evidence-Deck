@@ -1,0 +1,18 @@
+{
+  "name": "murder-case-evidence-deck",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Single-player browser investigation game with local profile saves.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "rule-check": "node scripts/rule-check.js",
+    "test": "npm run rule-check"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

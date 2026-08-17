@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Murder Case: Evidence Deck — เกมสืบสวนคดีฆาตกรรมแบบเล่นคนเดียวในเบราว์เซอร์"
+    />
+    <meta name="theme-color" content="#101518" />
+    <title>Murder Case: Evidence Deck</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#app-main">ข้ามไปยังเนื้อหาหลัก</a>
+    <div class="paper-grain" aria-hidden="true"></div>
+    <header class="site-header" id="site-header">
+      <button class="brand-lockup" id="brand-home" type="button" aria-label="กลับหน้าหลัก">
+        <span class="brand-mark" aria-hidden="true">M</span>
+        <span>
+          <strong>MURDER CASE</strong>
+          <small>EVIDENCE DECK</small>
+        </span>
+      </button>
+      <div class="header-actions" id="header-actions"></div>
+    </header>
+
+    <main id="app-main" tabindex="-1">
+      <div class="app-loading" role="status">
+        <span class="loading-stamp">กำลังเปิดแฟ้มคดี</span>
+      </div>
+    </main>
+
+    <div id="modal-root"></div>
+    <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+    <noscript>
+      <div class="noscript-message">เกมนี้ต้องใช้ JavaScript กรุณาเปิดใช้งานแล้วโหลดหน้าอีกครั้ง</div>
+    </noscript>
+    <script src="/src/cases.js"></script>
+    <script src="/src/gameLogic.js"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>
