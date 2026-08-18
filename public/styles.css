@@ -3163,50 +3163,113 @@ textarea {
   }
 }
 
-/* ── Case library ──────────────────────────────────────────────────────────
-   The dashboard lists every available case so a player can pick which file to
-   open. Only one investigation runs at a time, so tiles show state, not tabs. */
+/* ── Case selection page ─────────────────────────────────────
+   Reached straight after entering a detective profile. Only one case can be in
+   progress at a time, so the tiles carry enough detail to commit to a file. */
 
-.case-library {
-  margin-top: clamp(28px, 4vw, 46px);
-  padding: clamp(22px, 3vw, 34px);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: rgba(15, 20, 22, 0.55);
-}
-
-.case-tile-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+.case-select-intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
   gap: 18px;
-  margin-top: 22px;
+  margin-bottom: clamp(24px, 4vw, 38px);
 }
 
-.case-tile {
+.case-select-heading h1 {
+  margin: 6px 0 10px;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.4vw, 3.2rem);
+  line-height: 1.1;
+}
+
+.case-select-heading h1:focus-visible {
+  outline: 3px solid var(--gold-bright);
+  outline-offset: 6px;
+}
+
+.case-select-heading p {
+  max-width: 62ch;
+  margin: 0;
+  color: var(--muted);
+}
+
+.case-select-heading strong {
+  color: var(--ink);
+}
+
+.active-case-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 26px;
+  padding: 18px 22px;
+  border: 1px solid rgba(198, 165, 107, 0.42);
+  border-left-width: 4px;
+  border-radius: 12px;
+  background: rgba(198, 165, 107, 0.09);
+}
+
+.active-case-banner strong {
+  display: block;
+  font-size: 1.05rem;
+}
+
+.active-case-banner span {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.case-select-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 20px;
+}
+
+.case-choice {
   display: flex;
   position: relative;
   flex-direction: column;
-  gap: 9px;
-  padding: 22px;
+  gap: 10px;
+  padding: clamp(22px, 3vw, 30px);
+  overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 12px;
-  background: linear-gradient(160deg, rgba(30, 38, 40, 0.78), rgba(13, 17, 18, 0.9));
+  border-radius: 14px;
+  background: linear-gradient(158deg, rgba(32, 40, 42, 0.82), rgba(13, 17, 18, 0.94));
 }
 
-.case-tile.current {
+.case-choice::after {
+  position: absolute;
+  right: -70px;
+  bottom: -110px;
+  width: 280px;
+  height: 280px;
+  border: 1px solid rgba(198, 165, 107, 0.12);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+.case-choice.current {
   border-color: rgba(198, 165, 107, 0.55);
-  box-shadow: 0 0 0 1px rgba(198, 165, 107, 0.2), 0 18px 38px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 1px rgba(198, 165, 107, 0.18), 0 20px 44px rgba(0, 0, 0, 0.44);
 }
 
-.case-tile-top {
+.case-choice-top {
   display: flex;
+  position: relative;
+  z-index: 1;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
 }
 
 .difficulty-chip {
-  padding: 3px 11px;
+  padding: 3px 12px;
   border: 1px solid rgba(198, 165, 107, 0.4);
   border-radius: 999px;
   font-size: 0.76rem;
@@ -3219,73 +3282,111 @@ textarea {
   color: #f0a894;
 }
 
-.case-tile h3 {
+.case-choice h2 {
+  position: relative;
+  z-index: 1;
   margin: 4px 0 0;
   font-family: var(--font-display);
-  font-size: 1.5rem;
-  line-height: 1.25;
+  font-size: clamp(1.6rem, 2.6vw, 2.15rem);
+  line-height: 1.2;
 }
 
-.case-tile-sub,
-.case-tile-victim {
+.case-choice-sub,
+.case-choice-victim,
+.case-choice-briefing {
+  position: relative;
+  z-index: 1;
   margin: 0;
   color: var(--muted);
-  font-size: 0.9rem;
 }
 
-.case-tile-victim strong {
+.case-choice-sub {
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+.case-choice-victim strong {
   color: var(--ink);
 }
 
-.case-tile-facts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
+.case-choice-briefing {
   margin-top: 6px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 0.9rem;
+  line-height: 1.75;
 }
 
-.case-tile-facts span {
-  padding: 5px 10px;
+.case-choice-facts {
+  display: flex;
+  position: relative;
+  z-index: 1;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.case-choice-facts span {
+  padding: 6px 11px;
   border: 1px solid var(--line);
   border-radius: 7px;
   color: var(--muted);
   font-size: 0.8rem;
 }
 
-.case-tile-facts b {
-  margin-right: 4px;
+.case-choice-facts b {
+  margin-right: 5px;
   color: var(--gold-bright);
 }
 
-.case-tile-facts .fact-locked {
+.case-choice-facts .fact-locked {
   border-color: rgba(150, 158, 172, 0.35);
 }
 
-.case-tile-facts .fact-locked b {
+.case-choice-facts .fact-locked b {
   color: #c3c9d4;
 }
 
-.case-tile-state {
-  margin-top: 4px;
+.case-choice-state {
+  position: relative;
+  z-index: 1;
+  margin-top: 8px;
   color: var(--muted);
-  font-size: 0.82rem;
+  font-size: 0.84rem;
 }
 
-.case-tile-state.active {
+.case-choice-state.active {
   color: var(--gold-bright);
 }
 
-.case-tile-state.done {
+.case-choice-state.done {
   color: #86c7b5;
 }
 
-.case-tile-actions {
-  margin-top: auto;
-  padding-top: 14px;
+.case-choice-warning {
+  position: relative;
+  z-index: 1;
+  margin: 4px 0 0;
+  padding: 9px 12px;
+  border-left: 3px solid rgba(203, 92, 74, 0.65);
+  background: rgba(203, 92, 74, 0.09);
+  color: #eab5a7;
+  font-size: 0.83rem;
+  line-height: 1.6;
 }
 
-.case-tile-actions .button {
-  width: 100%;
+.case-choice-actions {
+  display: flex;
+  z-index: 1;
+  position: relative;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.case-choice-actions .button {
+  flex: 1 1 auto;
 }
 
 .modal-caution {
@@ -3299,7 +3400,22 @@ textarea {
 }
 
 @media (max-width: 720px) {
-  .case-tile-grid {
+  .case-select-grid {
     grid-template-columns: 1fr;
+  }
+
+  .case-select-intro,
+  .active-case-banner {
+    display: block;
+  }
+
+  .case-select-intro .button,
+  .active-case-banner .button {
+    width: 100%;
+    margin-top: 16px;
+  }
+
+  .case-choice-actions .button {
+    width: 100%;
   }
 }

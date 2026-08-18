@@ -259,7 +259,9 @@
       return;
     }
     sessionStorage.setItem(SESSION_PROFILE_KEY, profileId);
-    navigate('dashboard');
+    // A detective with nothing in progress lands on the case picker, not the
+    // dossier — choosing the file is the first real decision of a session.
+    navigate(store.profiles[profileId].activeCase ? 'dashboard' : 'case-select');
   }
 
   function leaveProfile() {
@@ -355,7 +357,9 @@
       caseData = resolveCaseData(currentProfile.activeCase.caseId);
     }
     renderHeader();
-    if (view === 'dashboard' && getActiveProfile()) {
+    if (view === 'case-select' && getActiveProfile()) {
+      renderCaseSelect();
+    } else if (view === 'dashboard' && getActiveProfile()) {
       renderDashboard();
     } else if (view === 'investigation' && getActiveProfile() && getActiveProfile().activeCase) {
       renderInvestigation();
@@ -380,9 +384,12 @@
           : '<span class="save-dot"></span> บันทึกแล้วในเครื่อง') +
       '</span>' +
       '<span class="header-profile"><span>สายสืบ</span> <strong>' + escapeHtml(profile.name) + '</strong></span>' +
-      (view === 'investigation' || view === 'board'
-        ? '<button class="button button-ghost" type="button" data-action="dashboard">แดชบอร์ด</button>'
-        : '') +
+      (view === 'case-select'
+        ? ''
+        : '<button class="button button-ghost" type="button" data-action="case-select">เลือกคดี</button>') +
+      (view === 'dashboard'
+        ? ''
+        : '<button class="button button-ghost" type="button" data-action="dashboard">แดชบอร์ด</button>') +
       '<button class="button button-ghost" type="button" data-action="switch-profile">สลับโปรไฟล์</button>';
   }
 
@@ -491,7 +498,7 @@
           '<div class="dashboard-heading"><p class="eyebrow">Detective dossier</p><h1>ยินดีต้อนรับ<br />สายสืบ ' + escapeHtml(profile.name) + '</h1><p>เลือกกลับเข้าสู่คดี หรือเปิดแฟ้มคดีใหม่จากคลัง ' + allCases.length + ' คดี</p></div>' +
           (active
             ? '<button class="button button-primary" type="button" data-action="continue-case">สืบสวนต่อ →</button>'
-            : '<button class="button button-primary" type="button" data-action="start-case" data-case-id="' + escapeAttribute(featured.id) + '">เปิดแฟ้มคดี →</button>') +
+            : '<button class="button button-primary" type="button" data-action="case-select">เลือกคดี →</button>') +
         '</div>' +
         '<div class="dashboard-grid">' +
           '<article class="case-card">' +
@@ -505,7 +512,8 @@
             '<div class="case-card-actions">' +
               (active
                 ? '<button class="button button-primary" type="button" data-action="continue-case">สืบสวนต่อ</button><button class="button button-secondary" type="button" data-action="restart-case" data-case-id="' + escapeAttribute(featured.id) + '">เริ่มคดีนี้ใหม่</button>'
-                : '<button class="button button-primary" type="button" data-action="start-case" data-case-id="' + escapeAttribute(featured.id) + '">เปิดแฟ้มคดี</button>') +
+                : '<button class="button button-primary" type="button" data-action="case-select">เลือกคดี</button>') +
+              (active ? '<button class="button button-ghost" type="button" data-action="case-select">คลังคดี (' + allCases.length + ')</button>' : '') +
             '</div>' +
           '</article>' +
           '<div class="stats-column" aria-label="สถิติสายสืบ">' +
@@ -514,7 +522,6 @@
             renderStatCard('คะแนนสูงสุด', stats.bestScore, stats.bestRank || 'ยังไม่มีอันดับ', true) +
           '</div>' +
         '</div>' +
-        renderCaseLibrary(profile) +
         '<section class="history-panel" aria-labelledby="history-title">' +
           '<div class="history-heading"><div><span class="section-kicker">Case archive</span><h2 id="history-title">ประวัติการสรุปคดี</h2></div><span class="profile-count">บันทึกแยกเฉพาะโปรไฟล์นี้</span></div>' +
           '<div class="history-list">' + historyMarkup + '</div>' +
@@ -522,45 +529,91 @@
       '</section>';
   }
 
-  function renderCaseLibrary(profile) {
+  function caseFactsFor(item) {
+    const hotspotCount = item.evidence.reduce(function countHotspots(total, card) { return total + card.hotspots.length; }, 0);
+    const lockedCount = item.evidence.reduce(function countLocked(total, card) {
+      return total + card.hotspots.filter(function isLocked(hotspot) {
+        return Array.isArray(hotspot.requires) && hotspot.requires.length;
+      }).length;
+    }, 0);
+    return { hotspotCount: hotspotCount, lockedCount: lockedCount };
+  }
+
+  function caseRecordFor(profile, caseId) {
+    const runs = profile.history.filter(function matchCase(entry) { return entry.caseId === caseId; });
+    const bestScore = runs.reduce(function best(top, entry) { return Math.max(top, Number(entry.score) || 0); }, 0);
+    const bestRun = runs.find(function matchBest(entry) { return (Number(entry.score) || 0) === bestScore; });
+    return {
+      runs: runs.length,
+      bestScore: bestScore,
+      bestRank: bestRun ? bestRun.rank || getRank(bestScore) : ''
+    };
+  }
+
+  function renderCaseSelect() {
+    const profile = getActiveProfile();
+    document.title = 'เลือกคดี · Murder Case';
     const active = profile.activeCase;
-    const cards = allCases.map(function caseTile(item) {
+    const activeCaseData = active ? resolveCaseData(active.caseId) : null;
+
+    const cards = allCases.map(function caseChoice(item) {
       const isActive = Boolean(active && active.caseId === item.id);
-      const solved = profile.history.filter(function matchCase(entry) { return entry.caseId === item.id; });
-      const bestScore = solved.reduce(function best(top, entry) { return Math.max(top, Number(entry.score) || 0); }, 0);
-      const hotspotCount = item.evidence.reduce(function countHotspots(total, card) { return total + card.hotspots.length; }, 0);
-      const lockedCount = item.evidence.reduce(function countLocked(total, card) {
-        return total + card.hotspots.filter(function isLocked(hotspot) { return Array.isArray(hotspot.requires) && hotspot.requires.length; }).length;
-      }, 0);
-      const statusChip = isActive
-        ? '<span class="case-tile-state active">กำลังสืบสวน</span>'
-        : solved.length
-          ? '<span class="case-tile-state done">ปิดคดีแล้ว ' + solved.length + ' ครั้ง · ดีที่สุด ' + bestScore + '</span>'
-          : '<span class="case-tile-state">ยังไม่เคยเปิด</span>';
-      return '<article class="case-tile' + (isActive ? ' current' : '') + '">' +
-        '<div class="case-tile-top"><span class="case-number">CASE ' + escapeHtml(item.code || '001') + '</span><span class="difficulty-chip ' + escapeAttribute(item.difficulty || 'normal') + '">' + escapeHtml(item.difficultyLabel || 'มาตรฐาน') + '</span></div>' +
-        '<h3>' + escapeHtml(item.title) + '</h3>' +
-        '<p class="case-tile-sub">' + escapeHtml(item.subtitle || '') + '</p>' +
-        '<p class="case-tile-victim">ผู้เสียชีวิต <strong>' + escapeHtml(item.victim) + '</strong></p>' +
-        '<div class="case-tile-facts">' +
-          '<span><b>' + item.suspects.length + '</b> ผู้ต้องสงสัย</span>' +
-          '<span><b>' + hotspotCount + '</b> จุดตรวจ</span>' +
-          '<span><b>' + item.initialActions + '</b> แอ็กชัน</span>' +
-          (lockedCount ? '<span class="fact-locked"><b>' + lockedCount + '</b> จุดที่ต้องปลดล็อก</span>' : '') +
+      const facts = caseFactsFor(item);
+      const record = caseRecordFor(profile, item.id);
+      const status = isActive
+        ? '<span class="case-choice-state active">กำลังสืบสวน · เหลือ ' + active.actionsLeft + '/' + item.initialActions + ' แอ็กชัน</span>'
+        : record.runs
+          ? '<span class="case-choice-state done">ปิดคดีแล้ว ' + record.runs + ' ครั้ง · ดีที่สุด ' + record.bestScore + ' (' + escapeHtml(record.bestRank) + ')</span>'
+          : '<span class="case-choice-state">ยังไม่เคยเปิดแฟ้มนี้</span>';
+      const replaceNote = !isActive && active
+        ? '<p class="case-choice-warning">การเปิดคดีนี้จะแทนที่ความคืบหน้าของ “' + escapeHtml(activeCaseData.title) + '” ที่ยังไม่จบ</p>'
+        : '';
+
+      return '<article class="case-choice' + (isActive ? ' current' : '') + '">' +
+        '<div class="case-choice-top">' +
+          '<span class="case-number">CASE ' + escapeHtml(item.code || '001') + '</span>' +
+          '<span class="difficulty-chip ' + escapeAttribute(item.difficulty || 'normal') + '">' + escapeHtml(item.difficultyLabel || 'มาตรฐาน') + '</span>' +
         '</div>' +
-        statusChip +
-        '<div class="case-tile-actions">' +
+        '<h2>' + escapeHtml(item.title) + '</h2>' +
+        '<p class="case-choice-sub">' + escapeHtml(item.subtitle || '') + '</p>' +
+        '<p class="case-choice-victim">ผู้เสียชีวิต <strong>' + escapeHtml(item.victim) + '</strong></p>' +
+        '<p class="case-choice-briefing">' + escapeHtml(item.briefing || '') + '</p>' +
+        '<div class="case-choice-facts">' +
+          '<span><b>' + item.suspects.length + '</b> ผู้ต้องสงสัย</span>' +
+          '<span><b>' + item.evidence.length + '</b> หลักฐาน</span>' +
+          '<span><b>' + facts.hotspotCount + '</b> จุดตรวจ</span>' +
+          '<span><b>' + item.initialActions + '</b> แอ็กชัน</span>' +
+          (facts.lockedCount ? '<span class="fact-locked"><b>' + facts.lockedCount + '</b> จุดที่ต้องปลดล็อก</span>' : '') +
+        '</div>' +
+        status +
+        replaceNote +
+        '<div class="case-choice-actions">' +
           (isActive
-            ? '<button class="button button-primary" type="button" data-action="continue-case">สืบสวนต่อ</button>'
-            : '<button class="button button-secondary" type="button" data-action="start-case" data-case-id="' + escapeAttribute(item.id) + '">เปิดคดีนี้</button>') +
+            ? '<button class="button button-primary" type="button" data-action="continue-case">สืบสวนต่อ</button>' +
+              '<button class="button button-secondary" type="button" data-action="restart-case" data-case-id="' + escapeAttribute(item.id) + '">เริ่มคดีนี้ใหม่</button>'
+            : '<button class="button button-primary" type="button" data-action="start-case" data-case-id="' + escapeAttribute(item.id) + '">เปิดแฟ้มคดีนี้</button>') +
         '</div>' +
       '</article>';
     }).join('');
 
-    return '<section class="case-library" aria-labelledby="case-library-title">' +
-      '<div class="history-heading"><div><span class="section-kicker">Case library</span><h2 id="case-library-title">คลังคดี</h2></div><span class="profile-count">สืบได้ครั้งละหนึ่งคดี</span></div>' +
-      '<div class="case-tile-grid">' + cards + '</div>' +
-    '</section>';
+    appRoot.innerHTML =
+      '<section class="page-shell case-select-page">' +
+        renderStorageWarning() +
+        '<div class="case-select-intro">' +
+          '<div class="case-select-heading">' +
+            '<p class="eyebrow">Case selection</p>' +
+            '<h1 id="case-select-title" tabindex="-1">เลือกคดีที่จะสืบ</h1>' +
+            '<p>สายสืบ <strong>' + escapeHtml(profile.name) + '</strong> · สืบได้ครั้งละหนึ่งคดี ความคืบหน้าและประวัติบันทึกแยกตามโปรไฟล์นี้</p>' +
+          '</div>' +
+          '<button class="button button-ghost" type="button" data-action="dashboard">ดูแดชบอร์ด</button>' +
+        '</div>' +
+        (activeCaseData
+          ? '<div class="active-case-banner" role="status"><div><strong>คุณกำลังสืบ “' + escapeHtml(activeCaseData.title) + '” อยู่</strong>' +
+            '<span>เหลือ ' + active.actionsLeft + '/' + activeCaseData.initialActions + ' แอ็กชัน · ตรวจแล้ว ' + active.opened.length + ' จุด</span></div>' +
+            '<button class="button button-primary" type="button" data-action="continue-case">สืบสวนต่อ</button></div>'
+          : '') +
+        '<div class="case-select-grid">' + cards + '</div>' +
+      '</section>';
   }
 
   function renderStatCard(label, value, foot, wide) {
@@ -1172,7 +1225,11 @@
               renderScoreChip('แอ็กชัน', result.breakdown.actionBonus, '+') + renderScoreChip('หลักฐานชี้ขาด', result.breakdown.criticalBonus, '+') + renderScoreChip('ข้อมูลชวนหลงทาง', result.breakdown.redHerringPenalty, '−') +
             '</div>' +
             '<div class="opened-result" data-category="critical"><div class="result-meta"><span class="category-badge">บทสรุปคดี</span></div><p style="margin-top:10px">' + escapeHtml(caseData.solutionExplanation) + '</p></div>' +
-            '<div class="modal-actions"><button class="button button-secondary" type="button" data-action="result-dashboard">กลับแดชบอร์ด</button><button class="button button-primary" type="button" data-action="result-restart" data-case-id="' + escapeAttribute(result.caseId || caseData.id) + '">สืบสวนคดีนี้อีกครั้ง</button></div>' +
+            '<div class="modal-actions">' +
+              '<button class="button button-secondary" type="button" data-action="result-dashboard">กลับแดชบอร์ด</button>' +
+              (allCases.length > 1 ? '<button class="button button-secondary" type="button" data-action="case-select">เลือกคดีอื่น</button>' : '') +
+              '<button class="button button-primary" type="button" data-action="result-restart" data-case-id="' + escapeAttribute(result.caseId || caseData.id) + '">สืบสวนคดีนี้อีกครั้ง</button>' +
+            '</div>' +
           '</div>' +
         '</section>' +
       '</div>';
@@ -1223,6 +1280,13 @@
     window.setTimeout(function focusStageAfterRender() {
       const stage = document.getElementById('evidence-photo-stage');
       if (stage) stage.focus({ preventScroll: false });
+    }, 20);
+  }
+
+  function focusCaseSelectHeading() {
+    window.setTimeout(function focusAfterRender() {
+      const heading = document.getElementById('case-select-title');
+      if (heading) heading.focus({ preventScroll: true });
     }, 20);
   }
 
@@ -1382,6 +1446,11 @@
       const action = actionButton.dataset.action;
       if (action === 'switch-profile') leaveProfile();
       if (action === 'dashboard') navigate('dashboard');
+      if (action === 'case-select') {
+        closeModal();
+        navigate('case-select');
+        focusCaseSelectHeading();
+      }
       if (action === 'open-board') {
         navigate('board');
         focusBoardHeading();
