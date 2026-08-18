@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="ผลตรวจพิษวิทยาแสดงโครมาโทแกรมและตารางสิ่งที่อยู่ในกระเพาะ">
+  <defs>
+    <radialGradient id="txVig" cx="0.5" cy="0.45" r="0.8">
+      <stop offset="0.5" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.55"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="800" fill="#0c1412"/>
+  <rect x="36" y="28" width="1128" height="744" fill="#0f1c1a" stroke="#2e5b52" stroke-width="2"/>
+
+  <g font-family="'Courier New',monospace" fill="#8fe0cb">
+    <text x="66" y="76" font-size="25" letter-spacing="2">TOXICOLOGY — LC/MS CHROMATOGRAM</text>
+    <text x="66" y="104" font-size="16" fill="#5c9d8e">SAMPLE: บลัด (femoral) · CASE 2026-0414-24F · RUN 03</text>
+    <line x1="66" y1="122" x2="1134" y2="122" stroke="#2e5b52" stroke-width="2"/>
+  </g>
+
+  <!-- chromatogram -->
+  <g>
+    <rect x="120" y="160" width="640" height="330" fill="#0a1614" stroke="#2e5b52" stroke-width="1.5"/>
+    <g stroke="#1d3d38" stroke-width="1">
+      <path d="M120 226 h640 M120 292 h640 M120 358 h640 M120 424 h640"/>
+      <path d="M226 160 v330 M332 160 v330 M438 160 v330 M544 160 v330 M650 160 v330"/>
+    </g>
+    <path d="M120 470 L180 468 L214 462 L236 466 L268 448 L288 466 L330 464
+             L392 462 L440 300 L456 190 L468 300 L482 458 L530 456 L560 440 L590 456
+             L640 452 L690 450 L740 452 L760 452"
+          fill="none" stroke="#6ff0cf" stroke-width="3"/>
+    <g font-family="'Courier New',monospace" font-size="14" fill="#5c9d8e">
+      <text x="118" y="512">0</text><text x="222" y="512">4</text><text x="328" y="512">8</text>
+      <text x="434" y="512">12</text><text x="540" y="512">16</text><text x="646" y="512">20</text>
+      <text x="380" y="536">retention time (min)</text>
+      <text x="70" y="170">rel.</text><text x="70" y="188">int.</text>
+    </g>
+    <!-- peak marker (hotspot 38%,38% = 456,304) -->
+    <circle cx="456" cy="304" r="52" fill="none" stroke="#f3c76b" stroke-width="2.5" stroke-dasharray="7 6"/>
+    <path d="M456 186 v-32" stroke="#f3c76b" stroke-width="2"/>
+    <text x="392" y="148" font-family="'Courier New',monospace" font-size="17" fill="#f7d98f">PEAK @ 7.4 min</text>
+  </g>
+
+  <!-- stomach content table (hotspot 71%,62% = 852,496) -->
+  <g>
+    <rect x="790" y="400" width="330" height="220" fill="#12211f" stroke="#2e5b52" stroke-width="1.5"/>
+    <text x="806" y="432" font-family="'Courier New',monospace" font-size="17" fill="#8fe0cb">GASTRIC CONTENT</text>
+    <line x1="806" y1="444" x2="1104" y2="444" stroke="#2e5b52"/>
+    <g font-family="'Courier New',monospace" font-size="15" fill="#a9cdc5">
+      <text x="806" y="474">ปริมาตร ......... 240 mL</text>
+      <text x="806" y="502">ลักษณะ .......... ของเหลวข้น</text>
+      <text x="806" y="530">โปรตีนเวย์ ...... พบ</text>
+      <text x="806" y="558">ตัวยา (ยังไม่ดูดซึม) พบมาก</text>
+      <text x="806" y="592" fill="#f3c76b">รอยเข็มใหม่ ..... ไม่พบ</text>
+    </g>
+  </g>
+
+  <!-- caffeine panel (hotspot 20%,68% = 240,544) -->
+  <g>
+    <rect x="120" y="560" width="290" height="150" fill="#12211f" stroke="#2e5b52" stroke-width="1.5"/>
+    <text x="136" y="592" font-family="'Courier New',monospace" font-size="17" fill="#8fe0cb">CAFFEINE</text>
+    <text x="136" y="628" font-family="'Courier New',monospace" font-size="24" fill="#e2b45c">9.8 mg/L</text>
+    <text x="136" y="656" font-family="'Courier New',monospace" font-size="14" fill="#5c9d8e">ref. 2–5 mg/L</text>
+    <rect x="136" y="672" width="258" height="14" fill="#12312c"/>
+    <rect x="136" y="672" width="212" height="14" fill="#e2b45c"/>
+  </g>
+
+  <!-- chain of custody stamp (hotspot 86%,24% = 1032,192) -->
+  <g transform="rotate(-8 1032 192)">
+    <rect x="932" y="152" width="200" height="82" fill="none" stroke="#67c2a8" stroke-width="3"/>
+    <text x="948" y="186" font-family="'Courier New',monospace" font-size="17" fill="#67c2a8">CHAIN OF</text>
+    <text x="948" y="214" font-family="'Courier New',monospace" font-size="17" fill="#67c2a8">CUSTODY OK</text>
+  </g>
+
+  <g font-family="'Courier New',monospace" font-size="15" fill="#4f887b">
+    <text x="66" y="748">LAB: สถาบันนิติวิทยาศาสตร์ · ผู้ตรวจ: ภก. ชนกันต์ ว. · หน้า 1/3</text>
+  </g>
+
+  <rect width="1200" height="800" fill="url(#txVig)"/>
+</svg>

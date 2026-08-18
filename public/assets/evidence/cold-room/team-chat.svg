@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="โทรศัพท์ของผู้ตายและภาพหน้าจอแชทกลุ่มทีมวิจัย">
+  <defs>
+    <linearGradient id="tcBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#14181c"/>
+      <stop offset="1" stop-color="#080b0d"/>
+    </linearGradient>
+    <linearGradient id="tcScreen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141d21"/>
+      <stop offset="1" stop-color="#0d1417"/>
+    </linearGradient>
+    <radialGradient id="tcVig" cx="0.5" cy="0.45" r="0.78">
+      <stop offset="0.5" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.6"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="800" fill="url(#tcBg)"/>
+
+  <!-- phone -->
+  <g>
+    <rect x="180" y="50" width="410" height="710" rx="42" fill="#1c2226" stroke="#4d585e" stroke-width="4"/>
+    <rect x="198" y="86" width="374" height="638" rx="22" fill="url(#tcScreen)"/>
+    <rect x="330" y="60" width="110" height="16" rx="8" fill="#0c1012"/>
+
+    <g font-family="'Courier New',monospace" font-size="15" fill="#7d8f96">
+      <text x="216" y="118">20:57</text>
+      <text x="500" y="118">▮▮▮</text>
+    </g>
+    <line x1="198" y1="132" x2="572" y2="132" stroke="#2a3439" stroke-width="2"/>
+    <text x="216" y="160" font-family="'Courier New',monospace" font-size="18" fill="#cfe0e6">กลุ่ม · ทีมวิจัยเฟสสอง</text>
+
+    <!-- victim last message (hotspot 36%,33% = 432,264) -->
+    <g>
+      <rect x="216" y="196" width="330" height="132" rx="16" fill="#20313a" stroke="#3d5c6a" stroke-width="2"/>
+      <text x="234" y="224" font-family="'Courier New',monospace" font-size="14" fill="#7fb0c2">ดร.ปัณณธร · 19:58</text>
+      <g font-family="'Courier New',monospace" font-size="16" fill="#dcecf2">
+        <text x="234" y="256">ผมจะรออยู่ที่แล็บ</text>
+        <text x="234" y="282">ขอคุยกับคนที่รับผิดชอบ</text>
+        <text x="234" y="308">ชุด B ก่อนพรุ่งนี้</text>
+      </g>
+      <text x="466" y="348" font-family="'Courier New',monospace" font-size="13" fill="#5f7a84">อ่านแล้ว 6</text>
+    </g>
+
+    <!-- deleted message notification (hotspot 36%,63% = 432,504) -->
+    <g>
+      <rect x="216" y="420" width="330" height="52" rx="12" fill="#181f23" stroke="#2a3439" stroke-width="2"/>
+      <text x="234" y="452" font-family="'Courier New',monospace" font-size="15" fill="#6a787e">ข้อความถูกลบ · 20:52</text>
+
+      <rect x="216" y="486" width="330" height="150" rx="16" fill="#2a2418" stroke="#8a7333" stroke-width="2"/>
+      <text x="234" y="514" font-family="'Courier New',monospace" font-size="13" fill="#d9b45c">LOCK SCREEN CACHE · โทรศัพท์ญาดา</text>
+      <text x="234" y="540" font-family="'Courier New',monospace" font-size="14" fill="#b9a26a">แพรวา · 20:52</text>
+      <g font-family="'Courier New',monospace" font-size="16" fill="#f2e2b8">
+        <text x="234" y="570">ชุดข้อมูล B ไม่มีปัญหาแล้ว</text>
+        <text x="234" y="596">พรุ่งนี้ไม่ต้องเอาไฟล์เดิม</text>
+        <text x="234" y="622">ไปประชุม</text>
+      </g>
+    </g>
+
+    <rect x="216" y="664" width="330" height="42" rx="21" fill="#161d21" stroke="#2a3439" stroke-width="2"/>
+    <text x="236" y="691" font-family="'Courier New',monospace" font-size="15" fill="#4e5b61">พิมพ์ข้อความ…</text>
+  </g>
+
+  <!-- right side: printed screenshots -->
+  <g>
+    <!-- group info (hotspot 74%,22% = 888,176) -->
+    <g transform="rotate(-2 890 180)">
+      <rect x="700" y="96" width="400" height="164" fill="#ece6d6" stroke="#a1926d" stroke-width="2"/>
+      <text x="718" y="128" font-family="'Courier New',monospace" font-size="16" fill="#2b241a">GROUP INFO — screenshot A</text>
+      <line x1="718" y1="140" x2="1082" y2="140" stroke="#a1926d"/>
+      <g font-family="'Courier New',monospace" font-size="15" fill="#4a4132">
+        <text x="718" y="168">สร้างเมื่อ: 12 พ.ค. 2024</text>
+        <text x="718" y="196">สมาชิก: 8 คน (ไม่เคยเปลี่ยน)</text>
+        <text x="718" y="224">กลุ่มย่อย: ชุด A, ชุด B</text>
+      </g>
+    </g>
+
+    <!-- yada message (hotspot 74%,46% = 888,368) -->
+    <g transform="rotate(1.5 890 372)">
+      <rect x="700" y="292" width="400" height="196" fill="#ece6d6" stroke="#a1926d" stroke-width="2"/>
+      <text x="718" y="322" font-family="'Courier New',monospace" font-size="16" fill="#2b241a">CHAT LOG — screenshot B</text>
+      <line x1="718" y1="334" x2="1082" y2="334" stroke="#a1926d"/>
+      <g font-family="'Courier New',monospace" font-size="14" fill="#4a4132">
+        <text x="718" y="360">ญาดา 14:02 · เครื่องปั่นเหวี่ยงเสียอีกแล้ว</text>
+        <text x="718" y="384">ญาดา 14:02 · ครั้งที่สามในอาทิตย์เดียว</text>
+      </g>
+      <rect x="712" y="396" width="376" height="34" fill="#f6d16a" opacity="0.5"/>
+      <text x="718" y="420" font-family="'Courier New',monospace" font-size="15" fill="#2b241a">ญาดา 14:03 · อยากให้ใครสักคนหายไปจากตึกนี้จริง ๆ</text>
+      <g font-family="'Courier New',monospace" font-size="14" fill="#4a4132">
+        <text x="718" y="452">[สติกเกอร์: ตัวการ์ตูนร้องไห้]</text>
+        <text x="718" y="476">แพรวา 14:05 · 555 · กันตพัฒน์ 14:05 · 555</text>
+      </g>
+    </g>
+
+    <!-- extraction stamp -->
+    <g transform="rotate(-9 900 620)">
+      <rect x="760" y="560" width="290" height="110" fill="none" stroke="#67a2c2" stroke-width="4"/>
+      <text x="778" y="606" font-family="'Courier New',monospace" font-size="22" fill="#67a2c2">DEVICE EXTRACT</text>
+      <text x="778" y="642" font-family="'Courier New',monospace" font-size="16" fill="#67a2c2">UFED · 15/04 08:20</text>
+    </g>
+  </g>
+
+  <g font-family="'Courier New',monospace" font-size="16" fill="#6e7f86">
+    <text x="60" y="770">EVIDENCE 10 — MOBILE DEVICE &amp; TEAM CHAT</text>
+  </g>
+
+  <rect width="1200" height="800" fill="url(#tcVig)"/>
+</svg>

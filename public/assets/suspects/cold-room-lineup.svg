@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 360" width="1800" height="360" role="img" aria-label="ภาพผู้ต้องสงสัยหกคนของคดีชั่วโมงในห้องเย็น">
+  <defs>
+    <linearGradient id="slBack" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a3b35"/>
+      <stop offset="1" stop-color="#1e211f"/>
+    </linearGradient>
+    <pattern id="slGrain" width="3" height="3" patternUnits="userSpaceOnUse">
+      <rect width="3" height="3" fill="#000" opacity="0"/>
+      <circle cx="1" cy="1" r="0.6" fill="#fff" opacity="0.045"/>
+    </pattern>
+    <g id="slBust">
+      <path d="M150 330 c0 -74 -40 -96 -78 -108 c-18 -6 -22 -14 -22 -30 h100 c0 16 -4 24 -22 30 c-38 12 -78 34 -78 108 z" fill="currentColor"/>
+      <circle cx="150" cy="128" r="62" fill="currentColor"/>
+    </g>
+  </defs>
+
+  <rect width="1800" height="360" fill="url(#slBack)"/>
+  <g stroke="#55574f" stroke-width="1.5" opacity="0.6">
+    <path d="M0 96 H1800 M0 176 H1800 M0 256 H1800"/>
+  </g>
+  <g stroke="#6d6f65" stroke-width="2" opacity="0.5">
+    <path d="M300 0 V360 M600 0 V360 M900 0 V360 M1200 0 V360 M1500 0 V360"/>
+  </g>
+
+  <!-- 1 กันตพัฒน์ -->
+  <g transform="translate(0 0)" color="#8d9482">
+    <use href="#slBust"/>
+    <g fill="#2b2e28"><rect x="112" y="196" width="76" height="18"/><path d="M150 214 l-16 60 h32 z"/></g>
+    <circle cx="150" cy="118" r="62" fill="none" stroke="#5a5f52" stroke-width="3" opacity="0.4"/>
+  </g>
+  <!-- 2 แพรวา -->
+  <g transform="translate(300 0)" color="#a1a394">
+    <use href="#slBust"/>
+    <path d="M88 128 q0 -78 62 -78 q62 0 62 78 q0 40 -14 66 q4 -66 -48 -66 q-52 0 -48 66 q-14 -26 -14 -66 z" fill="#5b5f52"/>
+    <path d="M96 236 q54 -22 108 0 l-8 20 q-46 -18 -92 0 z" fill="#e6e2d4" opacity="0.85"/>
+  </g>
+  <!-- 3 ธนกร -->
+  <g transform="translate(600 0)" color="#8a8f7f">
+    <use href="#slBust"/>
+    <g fill="#23261f"><path d="M118 202 h64 v14 h-64 z"/><path d="M150 216 l-12 66 h24 z"/></g>
+    <path d="M100 118 q50 -34 100 0" fill="none" stroke="#4e5347" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <!-- 4 สุมณฑา -->
+  <g transform="translate(900 0)" color="#9ba08e">
+    <use href="#slBust"/>
+    <path d="M92 132 q6 -82 58 -82 q52 0 58 82 q-10 -44 -58 -44 q-48 0 -58 44 z" fill="#4f5347"/>
+    <rect x="110" y="200" width="80" height="66" rx="6" fill="#dfe3d6" opacity="0.7"/>
+    <path d="M120 218 h60 M120 236 h60 M120 254 h40" stroke="#7c8375" stroke-width="3"/>
+  </g>
+  <!-- 5 เอกรินทร์ -->
+  <g transform="translate(1200 0)" color="#868c7b">
+    <use href="#slBust"/>
+    <path d="M84 116 h132 v20 h-132 z" fill="#3a3f34"/>
+    <path d="M96 116 q54 -40 108 0" fill="#3a3f34"/>
+    <rect x="188" y="222" width="26" height="34" rx="4" fill="#d8dcc9" opacity="0.8"/>
+  </g>
+  <!-- 6 ญาดา -->
+  <g transform="translate(1500 0)" color="#a7a998">
+    <use href="#slBust"/>
+    <path d="M92 140 q0 -90 58 -90 q58 0 58 90 q-6 -12 -18 -18 q-4 -44 -40 -44 q-36 0 -40 44 q-12 6 -18 18 z" fill="#565a4c"/>
+    <path d="M108 196 l42 30 l42 -30 l10 26 l-52 34 l-52 -34 z" fill="#dfe3d6" opacity="0.7"/>
+  </g>
+
+  <g font-family="'Courier New',monospace" font-size="17" fill="#c8ccbb" opacity="0.75">
+    <text x="20" y="344">24F-01</text><text x="320" y="344">24F-02</text><text x="620" y="344">24F-03</text>
+    <text x="920" y="344">24F-04</text><text x="1220" y="344">24F-05</text><text x="1520" y="344">24F-06</text>
+  </g>
+
+  <rect width="1800" height="360" fill="url(#slGrain)"/>
+</svg>

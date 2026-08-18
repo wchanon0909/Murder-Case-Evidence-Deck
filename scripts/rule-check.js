@@ -21,7 +21,11 @@ function createMemoryStorage() {
   };
 }
 
-function checkCaseContent() {
+function publicPath(...parts) {
+  return path.join(__dirname, '..', 'public', ...parts);
+}
+
+function checkFirstCaseContent() {
   const caseData = Cases.getCaseById('the-night-of-the-will');
   assert.ok(caseData, 'The first case must be available by id.');
   assert.equal(caseData.title, 'คดีคืนเปิดพินัยกรรม');
@@ -34,7 +38,6 @@ function checkCaseContent() {
     location: 'ห้องทำงาน',
     motive: 'hidden debt and loss of benefit from the new will'
   });
-  assert.ok(caseData.maxActions > 0 && caseData.maxActions < 32, 'Actions must be limited.');
 
   const requiredEvidence = [
     'แก้วไวน์แตก',
@@ -47,38 +50,198 @@ function checkCaseContent() {
     'รายงานนิติเวช'
   ];
   assert.deepEqual(caseData.evidence.map((item) => item.title), requiredEvidence);
+}
 
-  const validCategories = new Set(['critical', 'useful', 'red_herring', 'flavor']);
-  const evidenceIds = new Set();
-  const hotspotIds = new Set();
-  caseData.evidence.forEach((card) => {
-    assert.ok(!evidenceIds.has(card.id), `Duplicate evidence id: ${card.id}`);
-    evidenceIds.add(card.id);
-    assert.match(card.image || '', /^\/assets\/evidence\/[a-z0-9-]+\.jpg$/, `${card.title} needs a local evidence image.`);
-    assert.ok(
-      fs.existsSync(path.join(__dirname, '..', 'public', card.image)),
-      `Missing image file for ${card.title}: ${card.image}`
-    );
-    assert.ok(card.hotspots.length >= 3 && card.hotspots.length <= 4, `${card.title} needs 3–4 hotspots.`);
-    const categoriesOnCard = new Set();
-    card.hotspots.forEach((hotspot) => {
-      const compositeId = `${card.id}:${hotspot.id}`;
-      assert.ok(!hotspotIds.has(compositeId), `Duplicate hotspot id: ${compositeId}`);
-      hotspotIds.add(compositeId);
-      assert.ok(validCategories.has(hotspot.category), `Invalid category on ${compositeId}.`);
-      assert.ok(hotspot.result && hotspot.notebook, `${compositeId} needs reveal and notebook text.`);
-      assert.ok(hotspot.position, `${compositeId} needs an image hotspot position.`);
-      assert.ok(Number.isFinite(hotspot.position.x) && hotspot.position.x >= 0 && hotspot.position.x <= 100, `${compositeId} x must be 0–100.`);
-      assert.ok(Number.isFinite(hotspot.position.y) && hotspot.position.y >= 0 && hotspot.position.y <= 100, `${compositeId} y must be 0–100.`);
-      categoriesOnCard.add(hotspot.category);
-    });
-    assert.ok(categoriesOnCard.has('critical'), `${card.title} needs a critical choice.`);
-    assert.ok(categoriesOnCard.has('red_herring'), `${card.title} needs a red herring.`);
+function checkSecondCaseContent() {
+  const caseData = Cases.getCaseById('the-cold-room-hour');
+  assert.ok(caseData, 'The second case must be available by id.');
+  assert.equal(caseData.title, 'คดีชั่วโมงในห้องเย็น');
+  assert.equal(caseData.victim, 'ดร.ปัณณธร วรานนท์');
+  assert.equal(caseData.suspects.length, 6, 'Case 002 raises the suspect count to six.');
+  assert.equal(caseData.evidence.length, 10, 'Case 002 ships ten evidence cards.');
+  assert.equal(caseData.maxActions, 11);
+  assert.equal(caseData.methods.length, 6);
+  assert.equal(caseData.motives.length, 6);
+  assert.equal(caseData.locations.length, 6);
+  assert.deepEqual(caseData.solution, {
+    killer: 'แพรวา',
+    method: 'sedative overdose',
+    location: 'ห้องแล็บวิเคราะห์',
+    motive: 'covering up fabricated trial data'
   });
+
+  // The staged explanation must remain a selectable wrong answer, otherwise the
+  // twist collapses into a single obvious choice.
   assert.ok(
-    fs.existsSync(path.join(__dirname, '..', 'public', 'assets', 'suspects', 'suspect-lineup.jpg')),
+    caseData.methods.some((item) => item.value === 'hypothermia in the cold room'),
+    'The staged cause of death must stay on the method list as a decoy.'
+  );
+  assert.ok(
+    caseData.locations.includes('ห้องเย็นเก็บตัวอย่าง'),
+    'The room the body was found in must stay selectable as a decoy location.'
+  );
+  assert.notEqual(caseData.solution.location, 'ห้องเย็นเก็บตัวอย่าง');
+
+  const hotspots = caseData.evidence.flatMap((card) => card.hotspots);
+  assert.equal(hotspots.length, 40, 'Case 002 has 40 inspectable hotspots.');
+  const locked = hotspots.filter((hotspot) => Array.isArray(hotspot.requires) && hotspot.requires.length);
+  assert.equal(locked.length, 3, 'Case 002 gates three leads behind prerequisites.');
+  locked.forEach((hotspot) => {
+    assert.ok(hotspot.lockedHint, `${hotspot.id} needs a lockedHint so the lock is actionable.`);
+  });
+}
+
+function checkCaseStructure() {
+  const validCategories = new Set(['critical', 'useful', 'red_herring', 'flavor']);
+  assert.ok(Cases.CASES.length >= 2, 'The deck ships more than one case.');
+
+  const caseIds = new Set();
+  Cases.CASES.forEach((caseData) => {
+    assert.ok(!caseIds.has(caseData.id), `Duplicate case id: ${caseData.id}`);
+    caseIds.add(caseData.id);
+    assert.ok(caseData.code, `${caseData.title} needs a case code.`);
+    assert.ok(caseData.maxActions > 0 && caseData.maxActions < 32, `${caseData.title}: actions must be limited.`);
+    assert.ok(caseData.suspectLineup, `${caseData.title} needs a suspect lineup image.`);
+    assert.ok(
+      fs.existsSync(publicPath(caseData.suspectLineup)),
+      `Missing suspect lineup for ${caseData.title}: ${caseData.suspectLineup}`
+    );
+
+    // Every accusation option the player can pick must resolve, and the answer
+    // key must be one of those options.
+    assert.ok(caseData.suspects.includes(caseData.solution.killer), `${caseData.title}: killer is not a listed suspect.`);
+    assert.ok(caseData.locations.includes(caseData.solution.location), `${caseData.title}: location is not a listed location.`);
+    assert.ok(caseData.methods.some((item) => item.value === caseData.solution.method), `${caseData.title}: method is not a listed option.`);
+    assert.ok(caseData.motives.some((item) => item.value === caseData.solution.motive), `${caseData.title}: motive is not a listed option.`);
+    assert.equal(caseData.suspectProfiles.length, caseData.suspects.length, `${caseData.title}: every suspect needs a profile.`);
+
+    const layout = caseData.boardLayout;
+    assert.ok(layout && layout.width && layout.height && layout.victim, `${caseData.title} needs a board layout.`);
+    caseData.suspectProfiles.forEach((suspect) => {
+      assert.ok(caseData.suspects.includes(suspect.name), `${caseData.title}: profile ${suspect.id} is not in the suspect list.`);
+      assert.ok(layout.suspects[suspect.id], `${caseData.title}: board layout is missing ${suspect.id}.`);
+    });
+
+    const evidenceIds = new Set();
+    const hotspotKeys = new Set();
+    caseData.evidence.forEach((card) => {
+      assert.ok(!evidenceIds.has(card.id), `Duplicate evidence id: ${card.id}`);
+      evidenceIds.add(card.id);
+      assert.ok(layout.evidence[card.id], `${caseData.title}: board layout is missing ${card.id}.`);
+      assert.match(
+        card.image || '',
+        /^\/assets\/evidence\/[a-z0-9-]+(\/[a-z0-9-]+)?\.(jpg|svg)$/,
+        `${card.title} needs a local evidence image.`
+      );
+      assert.ok(fs.existsSync(publicPath(card.image)), `Missing image file for ${card.title}: ${card.image}`);
+      assert.ok(card.hotspots.length >= 3 && card.hotspots.length <= 4, `${card.title} needs 3–4 hotspots.`);
+
+      const categoriesOnCard = new Set();
+      card.hotspots.forEach((hotspot) => {
+        const compositeId = `${card.id}:${hotspot.id}`;
+        assert.ok(!hotspotKeys.has(compositeId), `Duplicate hotspot id: ${compositeId}`);
+        hotspotKeys.add(compositeId);
+        assert.ok(validCategories.has(hotspot.category), `Invalid category on ${compositeId}.`);
+        assert.ok(hotspot.result && hotspot.notebook, `${compositeId} needs reveal and notebook text.`);
+        assert.ok(hotspot.position, `${compositeId} needs an image hotspot position.`);
+        assert.ok(Number.isFinite(hotspot.position.x) && hotspot.position.x >= 0 && hotspot.position.x <= 100, `${compositeId} x must be 0–100.`);
+        assert.ok(Number.isFinite(hotspot.position.y) && hotspot.position.y >= 0 && hotspot.position.y <= 100, `${compositeId} y must be 0–100.`);
+        categoriesOnCard.add(hotspot.category);
+      });
+      assert.ok(categoriesOnCard.has('critical'), `${card.title} needs a critical choice.`);
+      assert.ok(categoriesOnCard.has('red_herring'), `${card.title} needs a red herring.`);
+    });
+
+    checkPrerequisites(caseData, hotspotKeys);
+  });
+}
+
+// Locked hotspots must point at clues that exist, must not depend on themselves
+// or on each other in a cycle, and the whole chain has to be openable inside the
+// case's action budget — otherwise the case is unwinnable.
+function checkPrerequisites(caseData, hotspotKeys) {
+  const depthCache = new Map();
+
+  function depthOf(key, seen) {
+    if (depthCache.has(key)) return depthCache.get(key);
+    assert.ok(!seen.has(key), `${caseData.title}: circular hotspot requirement at ${key}.`);
+    seen.add(key);
+    const parsed = Cases.parseHotspotKey(key);
+    const requires = Cases.getHotspotRequirements(caseData, parsed.evidenceId, parsed.hotspotId);
+    const depth = requires.length
+      ? 1 + Math.max(...requires.map((requirement) => depthOf(requirement, seen)))
+      : 1;
+    seen.delete(key);
+    depthCache.set(key, depth);
+    return depth;
+  }
+
+  let deepest = 0;
+  hotspotKeys.forEach((key) => {
+    const parsed = Cases.parseHotspotKey(key);
+    Cases.getHotspotRequirements(caseData, parsed.evidenceId, parsed.hotspotId).forEach((requirement) => {
+      assert.ok(hotspotKeys.has(requirement), `${caseData.title}: ${key} requires unknown hotspot ${requirement}.`);
+      assert.notEqual(requirement, key, `${caseData.title}: ${key} cannot require itself.`);
+    });
+    deepest = Math.max(deepest, depthOf(key, new Set()));
+  });
+  assert.ok(deepest <= caseData.maxActions, `${caseData.title}: a requirement chain is longer than the action budget.`);
+
+  // Opening every gated critical clue plus its prerequisites must still leave
+  // room to spare, so a careful player is never mathematically locked out.
+  const gatedCriticalCost = caseData.evidence
+    .flatMap((card) => card.hotspots.map((hotspot) => ({ card, hotspot })))
+    .filter((item) => item.hotspot.category === 'critical' && Array.isArray(item.hotspot.requires) && item.hotspot.requires.length)
+    .reduce((total, item) => total + depthOf(`${item.card.id}:${item.hotspot.id}`, new Set()), 0);
+  assert.ok(
+    gatedCriticalCost < caseData.maxActions,
+    `${caseData.title}: unlocking every gated critical clue would consume the whole budget.`
+  );
+}
+
+function checkLockedHotspotRule() {
+  const caseData = Cases.getCaseById('the-cold-room-hour');
+  const fixedTime = '2026-08-17T10:00:00.000Z';
+  let state = Game.createInitialCaseState(caseData.id, fixedTime);
+
+  assert.equal(Game.isHotspotUnlocked(state, caseData.id, 'drug-cabinet-log', 'drug-praewa-withdrawal'), false);
+  assert.equal(Game.canInspectHotspot(state, caseData.id, 'drug-cabinet-log', 'drug-praewa-withdrawal'), false);
+  assert.equal(Game.canInspectHotspot(state, caseData.id, 'toxicology', 'tox-sedative-class'), true);
+
+  const missing = Game.getMissingRequirements(state, caseData.id, 'drug-cabinet-log', 'drug-praewa-withdrawal');
+  assert.equal(missing.length, 1);
+  assert.equal(missing[0].evidenceTitle, 'ผลตรวจพิษวิทยา');
+
+  const blocked = () => Game.inspectHotspot(state, caseData.id, 'drug-cabinet-log', 'drug-praewa-withdrawal', fixedTime);
+  assert.throws(blocked, (error) => error && error.code === 'HOTSPOT_LOCKED');
+  assert.equal(state.actionsLeft, caseData.maxActions, 'A blocked inspection must not spend an action.');
+
+  state = Game.inspectHotspot(state, caseData.id, 'toxicology', 'tox-sedative-class', fixedTime).state;
+  assert.equal(state.actionsLeft, caseData.maxActions - 1);
+  assert.equal(Game.isHotspotUnlocked(state, caseData.id, 'drug-cabinet-log', 'drug-praewa-withdrawal'), true);
+
+  const unlocked = Game.inspectHotspot(state, caseData.id, 'drug-cabinet-log', 'drug-praewa-withdrawal', fixedTime);
+  assert.equal(unlocked.spentAction, true);
+  assert.equal(unlocked.state.actionsLeft, caseData.maxActions - 2);
+  assert.equal(unlocked.result.category, 'critical');
+}
+
+function checkAssetIntegrity() {
+  assert.ok(
+    fs.existsSync(publicPath('assets', 'suspects', 'suspect-lineup.jpg')),
     'The deduction board suspect lineup image is missing.'
   );
+  // Every generated SVG plate has to parse as XML, otherwise it silently renders
+  // as a broken image in the browser.
+  const svgDirectory = publicPath('assets', 'evidence', 'cold-room');
+  const svgFiles = fs.readdirSync(svgDirectory).filter((name) => name.endsWith('.svg'));
+  assert.equal(svgFiles.length, 10, 'Case 002 needs one SVG plate per evidence card.');
+  svgFiles.concat(['../../suspects/cold-room-lineup.svg']).forEach((name) => {
+    const markup = fs.readFileSync(path.join(svgDirectory, name), 'utf8');
+    assert.match(markup, /^<svg[\s>]/m, `${name} must start with an <svg> root element.`);
+    assert.ok(markup.trimEnd().endsWith('</svg>'), `${name} must close its <svg> element.`);
+    assert.doesNotMatch(markup, /fill="#[0-9a-fA-F]* [0-9a-fA-F]*"/, `${name} has a malformed colour value.`);
+  });
 }
 
 function checkInvestigationRules() {
@@ -211,12 +374,19 @@ function checkProfileIsolation() {
 }
 
 function run() {
-  checkCaseContent();
+  checkFirstCaseContent();
+  checkSecondCaseContent();
+  checkCaseStructure();
+  checkAssetIntegrity();
   checkInvestigationRules();
+  checkLockedHotspotRule();
   checkScoringRules();
   checkProfileIsolation();
-  console.log('✓ case content and hotspot categories');
+  console.log('✓ case content for both case files');
+  console.log('✓ shared case structure, board layouts and accusation options');
+  console.log('✓ evidence artwork and suspect lineups on disk');
   console.log('✓ limited actions and repeat-inspection behavior');
+  console.log('✓ locked hotspots, prerequisite chains and solvability');
   console.log('✓ accusation scoring and rank thresholds');
   console.log('✓ isolated localStorage profile saves and history');
   console.log('All Murder Case: Evidence Deck rule checks passed.');

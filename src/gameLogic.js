@@ -138,9 +138,33 @@
     return Boolean(state && state.openedHotspots && state.openedHotspots[hotspotKey(evidenceId, hotspotId)]);
   }
 
-  function canInspectHotspot(state, evidenceId, hotspotId) {
+  function openedHotspotKeys(state) {
+    return state && state.openedHotspots && typeof state.openedHotspots === 'object'
+      ? state.openedHotspots
+      : {};
+  }
+
+  function getMissingRequirements(state, caseOrId, evidenceId, hotspotId) {
+    const caseData = resolveCase(caseOrId);
+    if (!casesApi || typeof casesApi.getMissingRequirements !== 'function') return [];
+    return casesApi.getMissingRequirements(caseData, evidenceId, hotspotId, openedHotspotKeys(state));
+  }
+
+  function isHotspotUnlocked(state, caseOrId, evidenceId, hotspotId) {
+    return getMissingRequirements(state, caseOrId, evidenceId, hotspotId).length === 0;
+  }
+
+  function canInspectHotspot(state, caseOrId, evidenceId, hotspotId) {
+    // Older callers used canInspectHotspot(state, evidenceId, hotspotId), so the
+    // case argument is optional and only enables the prerequisite check.
+    if (arguments.length === 3) {
+      return canInspectHotspot(state, null, caseOrId, evidenceId);
+    }
     if (!state || state.status === 'completed') return false;
-    return isHotspotOpened(state, evidenceId, hotspotId) || Number(state.actionsLeft) > 0;
+    if (isHotspotOpened(state, evidenceId, hotspotId)) return true;
+    if (Number(state.actionsLeft) <= 0) return false;
+    if (!caseOrId) return true;
+    return isHotspotUnlocked(state, caseOrId, evidenceId, hotspotId);
   }
 
   function makeNotebookEntry(evidenceCard, hotspot, openedAt) {
@@ -195,6 +219,18 @@
 
     if (Number(state.actionsLeft) <= 0) {
       throw gameError('NO_ACTIONS_LEFT', 'No investigation actions remain. Submit a final accusation.');
+    }
+
+    const missing = getMissingRequirements(state, caseData, evidenceId, hotspotId);
+    if (missing.length) {
+      const error = gameError(
+        'HOTSPOT_LOCKED',
+        'This lead needs a supporting clue first: ' + missing.map(function label(item) {
+          return item.evidenceTitle + ' — ' + item.hotspotLabel;
+        }).join(', ') + '.'
+      );
+      error.missingRequirements = missing;
+      throw error;
     }
 
     const openedAt = toIso(now);
@@ -742,6 +778,8 @@
     selectEvidence,
     isHotspotOpened,
     canInspectHotspot,
+    isHotspotUnlocked,
+    getMissingRequirements,
     getNotebookEntries,
     getOpenedCategoryCounts,
     setDeductionEntry,

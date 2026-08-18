@@ -1,5 +1,11 @@
 (function attachCases(root, factory) {
-  const api = factory();
+  // Extra cases live in ./cases/*.js. In Node they are required here; in the
+  // browser each file pushes itself onto root.MurderCaseCaseLibrary before this
+  // script runs, so both environments end up with the same ordered list.
+  const extraCases = typeof module === 'object' && module.exports
+    ? [require('./cases/case-02-the-cold-room-hour')]
+    : (root && root.MurderCaseCaseLibrary) || [];
+  const api = factory(extraCases);
 
   if (typeof module === 'object' && module.exports) {
     module.exports = api;
@@ -8,7 +14,7 @@
   if (root) {
     root.MurderCaseCases = api;
   }
-})(typeof globalThis !== 'undefined' ? globalThis : this, function createCasesModule() {
+})(typeof globalThis !== 'undefined' ? globalThis : this, function createCasesModule(extraCases) {
   'use strict';
 
   const HOTSPOT_TYPES = Object.freeze({
@@ -481,7 +487,10 @@
 
   const firstCase = {
     id: 'the-night-of-the-will',
+    code: '001',
     version: 1,
+    difficulty: 'normal',
+    difficultyLabel: 'มาตรฐาน',
     title: 'คดีคืนเปิดพินัยกรรม',
     victim: 'วิชาญ ธนากุล',
     subtitle: 'คำประกาศมรดกที่ไม่มีวันมาถึงรุ่งเช้า',
@@ -546,6 +555,29 @@
       actionBonusMax: 10,
       criticalClueBonus: { perClue: 1, max: 5 },
       redHerringPenalty: { perClue: 1, max: 5 }
+    },
+    suspectLineup: '/assets/suspects/suspect-lineup.jpg',
+    boardLayout: {
+      width: 1180,
+      height: 860,
+      victim: { left: 470, top: 285, width: 240, height: 120 },
+      suspects: {
+        phakin: { left: 35, top: 30, width: 150, height: 190 },
+        mintra: { left: 265, top: 30, width: 150, height: 190 },
+        arak: { left: 495, top: 24, width: 150, height: 198 },
+        nuan: { left: 725, top: 30, width: 150, height: 190 },
+        sasin: { left: 955, top: 30, width: 150, height: 190 }
+      },
+      evidence: {
+        'broken-wine-glass': { left: 45, top: 415, width: 155, height: 142 },
+        'will-folder': { left: 250, top: 535, width: 155, height: 142 },
+        'security-camera': { left: 395, top: 410, width: 155, height: 142 },
+        'wine-tray': { left: 610, top: 535, width: 155, height: 142 },
+        'nuan-testimony': { left: 830, top: 410, width: 155, height: 142 },
+        'study-room': { left: 35, top: 665, width: 155, height: 142 },
+        kitchen: { left: 510, top: 675, width: 155, height: 142 },
+        'forensic-report': { left: 975, top: 660, width: 155, height: 142 }
+      }
     }
   };
 
@@ -561,7 +593,14 @@
     return value;
   }
 
-  const CASES = deepFreeze([firstCase]);
+  const registeredIds = new Set([firstCase.id]);
+  const CASES = deepFreeze([firstCase].concat(
+    (Array.isArray(extraCases) ? extraCases : []).filter(function keepUniqueCase(candidate) {
+      if (!candidate || !candidate.id || registeredIds.has(candidate.id)) return false;
+      registeredIds.add(candidate.id);
+      return true;
+    })
+  ));
 
   function getCaseById(caseId) {
     return CASES.find(function findCase(caseData) {
@@ -585,6 +624,65 @@
     }) || null;
   }
 
+  function hotspotKey(evidenceId, hotspotId) {
+    return String(evidenceId) + ':' + String(hotspotId);
+  }
+
+  function parseHotspotKey(key) {
+    const separator = String(key).indexOf(':');
+    if (separator < 0) return null;
+    return {
+      evidenceId: String(key).slice(0, separator),
+      hotspotId: String(key).slice(separator + 1)
+    };
+  }
+
+  // Some hotspots stay locked until a supporting clue has been opened. The rule
+  // lives here so the browser UI and the Node rules module read it the same way.
+  function getHotspotRequirements(caseOrId, evidenceId, hotspotId) {
+    const hotspot = getHotspotById(caseOrId, evidenceId, hotspotId);
+    if (!hotspot || !Array.isArray(hotspot.requires)) return [];
+    return hotspot.requires.map(String);
+  }
+
+  function describeHotspotKey(caseOrId, key) {
+    const parsed = parseHotspotKey(key);
+    if (!parsed) return null;
+    const evidenceCard = getEvidenceById(caseOrId, parsed.evidenceId);
+    const hotspot = evidenceCard ? getHotspotById(caseOrId, parsed.evidenceId, parsed.hotspotId) : null;
+    if (!evidenceCard || !hotspot) return null;
+    return {
+      key: key,
+      evidenceId: parsed.evidenceId,
+      hotspotId: parsed.hotspotId,
+      evidenceTitle: evidenceCard.title,
+      hotspotLabel: hotspot.label
+    };
+  }
+
+  // openedKeys accepts a Set, an array of "evidenceId:hotspotId" strings, or an
+  // object keyed the same way, so every caller can pass whatever it already has.
+  function isKeyOpened(openedKeys, key) {
+    if (!openedKeys) return false;
+    if (typeof openedKeys.has === 'function') return openedKeys.has(key);
+    if (Array.isArray(openedKeys)) return openedKeys.indexOf(key) >= 0;
+    return Boolean(openedKeys[key]);
+  }
+
+  function getMissingRequirements(caseOrId, evidenceId, hotspotId, openedKeys) {
+    return getHotspotRequirements(caseOrId, evidenceId, hotspotId)
+      .filter(function stillMissing(key) {
+        return !isKeyOpened(openedKeys, key);
+      })
+      .map(function describeMissing(key) {
+        return describeHotspotKey(caseOrId, key) || { key: key, evidenceId: '', hotspotId: '', evidenceTitle: '', hotspotLabel: '' };
+      });
+  }
+
+  function isHotspotUnlocked(caseOrId, evidenceId, hotspotId, openedKeys) {
+    return getMissingRequirements(caseOrId, evidenceId, hotspotId, openedKeys).length === 0;
+  }
+
   return Object.freeze({
     HOTSPOT_TYPES,
     CASES,
@@ -593,6 +691,12 @@
     firstCase: CASES[0],
     getCaseById,
     getEvidenceById,
-    getHotspotById
+    getHotspotById,
+    hotspotKey,
+    parseHotspotKey,
+    getHotspotRequirements,
+    describeHotspotKey,
+    getMissingRequirements,
+    isHotspotUnlocked
   });
 });

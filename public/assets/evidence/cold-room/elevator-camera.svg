@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="แผ่นภาพนิ่งจากกล้องวงจรปิดสี่ตัว โถงลิฟต์ชั้น 24 ห้องควบคุมชั้น 3 และล็อบบี้">
+  <defs>
+    <linearGradient id="ecFrame" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b2320"/>
+      <stop offset="1" stop-color="#0c110f"/>
+    </linearGradient>
+    <pattern id="ecScan" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="2" fill="#ffffff" opacity="0.035"/>
+    </pattern>
+    <radialGradient id="ecVig" cx="0.5" cy="0.45" r="0.8">
+      <stop offset="0.5" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.55"/>
+    </radialGradient>
+    <g id="ecPerson">
+      <circle cx="0" cy="-52" r="17" fill="#8d9a95"/>
+      <path d="M-20 -34 h40 l8 62 h-56 z" fill="#8d9a95"/>
+      <path d="M-14 28 h12 l2 46 h-12 z M2 28 h12 l2 46 h-12 z" fill="#77837f"/>
+    </g>
+  </defs>
+
+  <rect width="1200" height="800" fill="#0a0d0c"/>
+
+  <!-- FRAME A: 20:03 hall (hotspot 26%,32% = 312,256) -->
+  <g>
+    <rect x="40" y="60" width="530" height="330" fill="url(#ecFrame)" stroke="#3c4d47" stroke-width="2"/>
+    <g opacity="0.55" stroke="#33443e" stroke-width="2" fill="none">
+      <path d="M40 300 H570"/>
+      <path d="M150 130 h130 v170 h-130 z"/>
+      <path d="M330 130 h130 v170 h-130 z"/>
+      <path d="M215 130 v170 M395 130 v170"/>
+    </g>
+    <g transform="translate(312 268) scale(1.25)">
+      <use href="#ecPerson"/>
+      <path d="M-24 -36 h48 l10 66 h-68 z" fill="#e6ebe8" opacity="0.92"/>
+      <path d="M-24 -36 h48 l10 66 h-68 z" fill="none" stroke="#b9c4c0" stroke-width="1.5"/>
+    </g>
+    <path d="M312 214 m-60 0 a60 60 0 1 0 120 0 a60 60 0 1 0 -120 0" fill="none" stroke="#f3c76b" stroke-width="2.5" stroke-dasharray="8 7" transform="translate(0 44)"/>
+    <rect x="40" y="60" width="530" height="330" fill="url(#ecScan)"/>
+    <g font-family="'Courier New',monospace" font-size="17" fill="#9fe3c9">
+      <text x="56" y="88">CAM-24-HALL</text>
+      <text x="420" y="88">20:03:41</text>
+      <text x="56" y="376" font-size="14" fill="#6fae95">เสื้อกาวน์ · มุ่งหน้าปีกแล็บ</text>
+    </g>
+  </g>
+
+  <!-- FRAME B: control room floor 3 (hotspot 74%,33% = 888,264) -->
+  <g>
+    <rect x="630" y="60" width="530" height="330" fill="url(#ecFrame)" stroke="#3c4d47" stroke-width="2"/>
+    <g opacity="0.6">
+      <rect x="700" y="150" width="380" height="130" fill="#14201d" stroke="#33443e" stroke-width="2"/>
+      <g fill="#2c4d45">
+        <rect x="716" y="164" width="110" height="70"/><rect x="840" y="164" width="110" height="70"/>
+        <rect x="964" y="164" width="100" height="70"/>
+      </g>
+      <rect x="660" y="300" width="470" height="14" fill="#22302c"/>
+    </g>
+    <g transform="translate(888 268) scale(1.1)">
+      <use href="#ecPerson"/>
+    </g>
+    <rect x="630" y="60" width="530" height="330" fill="url(#ecScan)"/>
+    <g font-family="'Courier New',monospace" font-size="17" fill="#9fe3c9">
+      <text x="646" y="88">CAM-03-CTRL</text>
+      <text x="1010" y="88">20:04:00</text>
+      <text x="646" y="376" font-size="14" fill="#6fae95">เช็คอินระบบทุก 30 นาที · 19:00–23:00</text>
+    </g>
+  </g>
+
+  <!-- FRAME C: 06:20 hall (hotspot 27%,74% = 324,592) -->
+  <g>
+    <rect x="40" y="410" width="530" height="330" fill="url(#ecFrame)" stroke="#3c4d47" stroke-width="2"/>
+    <g opacity="0.55" stroke="#33443e" stroke-width="2" fill="none">
+      <path d="M40 650 H570"/>
+      <path d="M150 480 h130 v170 h-130 z"/>
+      <path d="M330 480 h130 v170 h-130 z"/>
+    </g>
+    <g transform="translate(324 604)">
+      <use href="#ecPerson"/>
+      <rect x="18" y="-10" width="34" height="26" fill="#6d7a76"/>
+    </g>
+    <rect x="40" y="410" width="530" height="330" fill="url(#ecScan)"/>
+    <g font-family="'Courier New',monospace" font-size="17" fill="#9fe3c9">
+      <text x="56" y="438">CAM-24-HALL</text>
+      <text x="420" y="438">06:20:12</text>
+      <text x="56" y="726" font-size="14" fill="#6fae95">ถือแฟ้มตรวจเวร QA</text>
+    </g>
+  </g>
+
+  <!-- FRAME D: lobby (hotspot 74%,76% = 888,608) -->
+  <g>
+    <rect x="630" y="410" width="530" height="330" fill="url(#ecFrame)" stroke="#3c4d47" stroke-width="2"/>
+    <g opacity="0.5" stroke="#33443e" stroke-width="2" fill="none">
+      <path d="M630 660 H1160"/>
+      <path d="M700 470 h180 v190 h-180 z"/>
+      <path d="M930 470 h180 v190 h-180 z"/>
+    </g>
+    <g stroke="#5d7c74" stroke-width="2" opacity="0.7">
+      <path d="M690 470 l-18 60 M740 460 l-18 70 M800 470 l-18 60 M870 455 l-18 75
+               M940 470 l-18 60 M1000 460 l-18 70 M1070 470 l-18 60"/>
+    </g>
+    <g transform="translate(888 626) scale(0.9)"><use href="#ecPerson"/></g>
+    <rect x="630" y="410" width="530" height="330" fill="url(#ecScan)"/>
+    <g font-family="'Courier New',monospace" font-size="17" fill="#9fe3c9">
+      <text x="646" y="438">CAM-01-LOBBY</text>
+      <text x="1010" y="438">21:04:55</text>
+      <text x="646" y="726" font-size="14" fill="#6fae95">ฝนตกหนัก · ไม่มีผู้ขึ้นลิฟต์หวงห้าม</text>
+    </g>
+  </g>
+
+  <rect width="1200" height="800" fill="url(#ecVig)"/>
+</svg>

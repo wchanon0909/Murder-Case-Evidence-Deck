@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="รายงานชันสูตรพลิกศพพร้อมแผนภาพร่างกายและการประเมินเวลาเสียชีวิต">
+  <defs>
+    <linearGradient id="apPaper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f1ece0"/>
+      <stop offset="1" stop-color="#ddd6c4"/>
+    </linearGradient>
+    <radialGradient id="apVig" cx="0.5" cy="0.45" r="0.8">
+      <stop offset="0.5" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.5"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="800" fill="#15130f"/>
+  <rect x="40" y="30" width="1120" height="740" fill="url(#apPaper)" stroke="#a89a76" stroke-width="2"/>
+
+  <g font-family="'Courier New',monospace" fill="#2a231a">
+    <text x="70" y="80" font-size="27" letter-spacing="2">PRELIMINARY AUTOPSY REPORT</text>
+    <text x="70" y="110" font-size="17" fill="#5a4f3c">ผู้ตาย: ดร.ปัณณธร วรานนท์ · อายุ 54 ปี · เลขคดี 2026-0414-24F</text>
+    <line x1="70" y1="128" x2="1130" y2="128" stroke="#8d7f5e" stroke-width="2"/>
+  </g>
+
+  <!-- body diagram (hotspot 30%,47% = 360,376) -->
+  <g transform="translate(300 160)" stroke="#4a4132" fill="none" stroke-width="3">
+    <circle cx="60" cy="40" r="34"/>
+    <path d="M60 74 V210"/>
+    <path d="M60 100 L4 168 M60 100 L116 168"/>
+    <path d="M60 210 L20 330 M60 210 L100 330"/>
+    <path d="M26 96 H94" stroke-width="2"/>
+  </g>
+  <g transform="translate(300 160)">
+    <circle cx="4" cy="168" r="14" fill="none" stroke="#8a2f24" stroke-width="3" stroke-dasharray="5 4"/>
+    <circle cx="116" cy="168" r="14" fill="none" stroke="#8a2f24" stroke-width="3" stroke-dasharray="5 4"/>
+    <circle cx="60" cy="40" r="46" fill="none" stroke="#8a2f24" stroke-width="3" stroke-dasharray="5 4"/>
+    <text x="150" y="46" font-family="'Courier New',monospace" font-size="15" fill="#8a2f24">ใบหู: ไม่พบรอยจากความเย็น</text>
+    <text x="150" y="174" font-family="'Courier New',monospace" font-size="15" fill="#8a2f24">ปลายนิ้ว: ไม่พบ frostbite</text>
+    <text x="150" y="200" font-family="'Courier New',monospace" font-size="15" fill="#8a2f24">ผิวหนัง: ไม่มีการหดตัวของหลอดเลือด</text>
+  </g>
+  <text x="240" y="546" font-family="'Courier New',monospace" font-size="16" fill="#5a4f3c">FIG.1 — แผนภาพร่างกาย / จุดตรวจซ้ำ</text>
+
+  <!-- time of death box (hotspot 70%,33% = 840,264) -->
+  <g>
+    <rect x="700" y="190" width="400" height="150" fill="#e3dac2" stroke="#8d7f5e" stroke-width="2"/>
+    <text x="716" y="222" font-family="'Courier New',monospace" font-size="18" fill="#2a231a">ESTIMATED TIME OF DEATH</text>
+    <text x="716" y="262" font-family="'Courier New',monospace" font-size="26" fill="#8a2f24" text-decoration="line-through">≈ 22:00 น.</text>
+    <text x="716" y="300" font-family="'Courier New',monospace" font-size="15" fill="#5a4f3c">อิงอุณหภูมิร่างกาย (สมมติ 25°C โดยรอบ)</text>
+    <text x="716" y="326" font-family="'Courier New',monospace" font-size="15" fill="#5a4f3c">*** ต้องคำนวณใหม่ที่ −20°C ***</text>
+  </g>
+
+  <!-- hand abrasion note (hotspot 47%,72% = 564,576) -->
+  <g>
+    <rect x="470" y="546" width="330" height="120" fill="#e8dfc9" stroke="#8d7f5e" stroke-width="1.5"/>
+    <text x="486" y="576" font-family="'Courier New',monospace" font-size="16" fill="#2a231a">รอยถลอก ฝ่ามือขวา / ข้อศอก</text>
+    <path d="M486 592 h298" stroke="#b3a684"/>
+    <text x="486" y="618" font-family="'Courier New',monospace" font-size="14" fill="#5a4f3c">ยาว 6.2 ซม. · พบเศษวัสดุพื้นในแผล</text>
+    <text x="486" y="642" font-family="'Courier New',monospace" font-size="14" fill="#5a4f3c">ลักษณะสอดคล้องกับการล้มกระแทก</text>
+  </g>
+
+  <!-- general health (hotspot 84%,63% = 1008,504) -->
+  <g>
+    <rect x="890" y="430" width="235" height="150" fill="#e8dfc9" stroke="#8d7f5e" stroke-width="1.5"/>
+    <text x="906" y="460" font-family="'Courier New',monospace" font-size="16" fill="#2a231a">GENERAL HEALTH</text>
+    <g font-family="'Courier New',monospace" font-size="14" fill="#5a4f3c">
+      <text x="906" y="492">หัวใจ ......... ปกติ</text>
+      <text x="906" y="516">ปอด .......... ปกติ</text>
+      <text x="906" y="540">สมอง ......... ปกติ</text>
+      <text x="906" y="564">ตรวจปีล่าสุด .. ผ่าน</text>
+    </g>
+  </g>
+
+  <g font-family="'Courier New',monospace" font-size="15" fill="#6b5f49">
+    <text x="70" y="726">สาเหตุการตายเบื้องต้น: ภาวะตัวเย็นเกิน (ยังไม่สรุป — รอผลพิษวิทยา)</text>
+    <text x="70" y="750">แพทย์ผู้ชันสูตร: พญ. รัตนวดี ก. · สถาบันนิติเวช</text>
+  </g>
+  <g transform="rotate(-13 990 700)">
+    <rect x="880" y="660" width="230" height="72" fill="none" stroke="#8a2f24" stroke-width="4"/>
+    <text x="898" y="708" font-family="'Courier New',monospace" font-size="30" fill="#8a2f24">PRELIMINARY</text>
+  </g>
+
+  <rect width="1200" height="800" fill="url(#apVig)"/>
+</svg>

@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="แก้วเชคโปรตีนของผู้ตายบนโต๊ะปฏิบัติการ มีตะกอนที่ก้นแก้ว">
+  <defs>
+    <linearGradient id="psRoom" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b2a2e"/>
+      <stop offset="1" stop-color="#0b1417"/>
+    </linearGradient>
+    <linearGradient id="psBench" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3b4247"/>
+      <stop offset="1" stop-color="#22272b"/>
+    </linearGradient>
+    <linearGradient id="psGlass" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#dfe9ec" stop-opacity="0.5"/>
+      <stop offset="0.35" stop-color="#ffffff" stop-opacity="0.24"/>
+      <stop offset="0.75" stop-color="#9fb3ba" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#6d8188" stop-opacity="0.55"/>
+    </linearGradient>
+    <radialGradient id="psVig" cx="0.5" cy="0.45" r="0.75">
+      <stop offset="0.45" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.72"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="800" fill="url(#psRoom)"/>
+  <rect x="0" y="520" width="1200" height="280" fill="url(#psBench)"/>
+  <path d="M0 520 H1200" stroke="#565f65" stroke-width="3"/>
+
+  <!-- background lab clutter -->
+  <g opacity="0.5">
+    <rect x="60" y="360" width="70" height="160" fill="#1e3a3f" stroke="#3d666d" stroke-width="2"/>
+    <rect x="150" y="410" width="52" height="110" fill="#1e3a3f" stroke="#3d666d" stroke-width="2"/>
+    <rect x="990" y="330" width="150" height="190" fill="#182c30" stroke="#39575c" stroke-width="2"/>
+    <path d="M1000 370 h130 M1000 410 h130 M1000 450 h130" stroke="#39575c" stroke-width="2"/>
+  </g>
+
+  <!-- evidence marker -->
+  <g>
+    <path d="M760 470 l58 0 l-29 -46 z" fill="#e6c96f"/>
+    <rect x="760" y="470" width="58" height="46" fill="#f3dc9a"/>
+    <text x="777" y="504" font-family="'Courier New',monospace" font-size="30" fill="#2a2115">3</text>
+  </g>
+
+  <!-- shaker body -->
+  <g>
+    <path d="M492 190 h216 v18 l-14 12 v352 a30 30 0 0 1 -30 30 h-128 a30 30 0 0 1 -30 -30 v-352 l-14 -12 z"
+          fill="url(#psGlass)" stroke="#c8d8dc" stroke-width="3"/>
+    <!-- lid (hotspot 49%,14% = 588,112) -->
+    <g>
+      <rect x="484" y="82" width="232" height="62" rx="14" fill="#2c3a3f" stroke="#93a9af" stroke-width="3"/>
+      <path d="M500 100 h200 M500 126 h200" stroke="#67797f" stroke-width="3"/>
+      <rect x="556" y="60" width="88" height="26" rx="10" fill="#3a4b51" stroke="#93a9af" stroke-width="2"/>
+    </g>
+    <!-- soap rim residue (hotspot 52%,33% = 624,264) -->
+    <g>
+      <path d="M500 250 h200" stroke="#eaf6f8" stroke-width="9" opacity="0.75"/>
+      <path d="M500 268 h200" stroke="#cfe6ea" stroke-width="4" opacity="0.5"/>
+      <g fill="#ffffff" opacity="0.6">
+        <circle cx="530" cy="240" r="7"/><circle cx="576" cy="234" r="5"/>
+        <circle cx="628" cy="238" r="8"/><circle cx="676" cy="243" r="5"/>
+      </g>
+    </g>
+    <!-- graduation marks -->
+    <g stroke="#b9cbd0" stroke-width="2" opacity="0.6">
+      <path d="M660 320 h34 M672 360 h22 M660 400 h34 M672 440 h22"/>
+    </g>
+    <!-- sediment (hotspot 45%,76% = 540,608) -->
+    <g>
+      <path d="M506 596 q94 34 188 0 v-30 q-94 26 -188 0 z" fill="#f0f3ee" opacity="0.9"/>
+      <path d="M506 596 q94 34 188 0" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.8"/>
+      <g fill="#ffffff" opacity="0.85">
+        <circle cx="546" cy="592" r="4"/><circle cx="588" cy="600" r="5"/>
+        <circle cx="632" cy="596" r="4"/><circle cx="668" cy="588" r="3"/>
+      </g>
+    </g>
+    <!-- name sticker (hotspot 66%,55% = 792,440) -->
+    <g transform="rotate(4 700 440)">
+      <rect x="640" y="410" width="180" height="58" rx="4" fill="#e9e3cf" stroke="#a8a08a" stroke-width="2" opacity="0.92"/>
+      <text x="654" y="447" font-family="'Courier New',monospace" font-size="22" fill="#4a4132">ดร.ปัณณธร</text>
+    </g>
+  </g>
+
+  <!-- scale ruler -->
+  <g stroke="#c9d6da" stroke-width="2" font-family="'Courier New',monospace" font-size="15" fill="#c9d6da">
+    <path d="M160 700 h240 M160 692 v16 M280 694 v12 M400 692 v16"/>
+    <text x="252" y="732">10 cm</text>
+  </g>
+
+  <g font-family="'Courier New',monospace" font-size="17" fill="#7f959b">
+    <text x="60" y="70">EVIDENCE 03 — PERSONAL SHAKER BOTTLE</text>
+    <text x="60" y="96" font-size="14" fill="#5d7076">พบบนโต๊ะปฏิบัติการ ห้องแล็บวิเคราะห์ · ถ่ายก่อนเคลื่อนย้าย</text>
+  </g>
+
+  <rect width="1200" height="800" fill="url(#psVig)"/>
+</svg>

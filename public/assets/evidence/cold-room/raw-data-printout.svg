@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="เอกสารข้อมูลดิบที่ผู้ตายพิมพ์ไว้ พร้อมตารางเปรียบเทียบและลายมือเขียนกำกับ">
+  <defs>
+    <linearGradient id="rdPaper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6f3e8"/>
+      <stop offset="1" stop-color="#e4dfcd"/>
+    </linearGradient>
+    <radialGradient id="rdVig" cx="0.5" cy="0.45" r="0.8">
+      <stop offset="0.5" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.55"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="800" fill="#171410"/>
+
+  <!-- stacked sheets behind -->
+  <g transform="rotate(2.4 600 400)"><rect x="70" y="60" width="1000" height="700" fill="#cfc8b2"/></g>
+  <g transform="rotate(-1.4 600 400)"><rect x="60" y="46" width="1020" height="716" fill="#e0d9c4"/></g>
+
+  <g transform="rotate(0.4 600 400)">
+    <rect x="52" y="34" width="1032" height="728" fill="url(#rdPaper)" stroke="#a99b78" stroke-width="2"/>
+
+    <g font-family="'Courier New',monospace" fill="#2b241a">
+      <text x="84" y="84" font-size="23" letter-spacing="1">PHASE II RAW DATA vs PATENT DRAFT — COHORT B</text>
+      <text x="84" y="110" font-size="15" fill="#5c5140">export: trialdb.vch/phase2 · printed 14/04 18:33 · 32 pages</text>
+      <line x1="84" y1="128" x2="1052" y2="128" stroke="#8d7f5e" stroke-width="2"/>
+    </g>
+
+    <!-- comparison table (hotspot 35%,45% = 420,360) -->
+    <g>
+      <rect x="84" y="200" width="620" height="320" fill="#efe9d7" stroke="#8d7f5e" stroke-width="1.5"/>
+      <g font-family="'Courier New',monospace" font-size="15" fill="#5c5140">
+        <text x="96" y="228">ID      RAW           DRAFT         Δ</text>
+        <line x1="96" y1="240" x2="692" y2="240" stroke="#a1926d"/>
+      </g>
+      <g font-family="'Courier New',monospace" font-size="16" fill="#2b241a">
+        <text x="96" y="268">B-004   ไม่ตอบสนอง     ตอบสนอง        ***</text>
+        <text x="96" y="296">B-007   ไม่ตอบสนอง     ตอบสนอง        ***</text>
+        <text x="96" y="324">B-011   ตอบสนอง       ตอบสนอง        ok</text>
+        <text x="96" y="352">B-013   ไม่ตอบสนอง     ตอบสนอง        ***</text>
+        <text x="96" y="380">B-018   ไม่ตอบสนอง     ตอบสนอง        ***</text>
+        <text x="96" y="408">B-022   ตอบสนอง       ตอบสนอง        ok</text>
+        <text x="96" y="436">B-026   ไม่ตอบสนอง     ตอบสนอง        ***</text>
+        <text x="96" y="464">…       …             …              …</text>
+      </g>
+      <text x="96" y="500" font-family="'Courier New',monospace" font-size="16" fill="#8a2f24">รวมที่ไม่ตรงกัน: 14 ราย · ทั้งหมดอยู่ในชุด B</text>
+      <g stroke="#8a2f24" stroke-width="3" fill="none" opacity="0.85">
+        <path d="M420 256 h270 v10 h-270 z"/>
+        <path d="M420 340 h270 v10 h-270 z"/>
+        <path d="M420 424 h270 v10 h-270 z"/>
+      </g>
+    </g>
+
+    <!-- handwriting -->
+    <g transform="rotate(-3 300 570)" font-family="'Segoe Script','Comic Sans MS',cursive" font-size="30" fill="#1f3f8a">
+      <text x="96" y="570">แจ้งคณะกรรมการจริยธรรม พรุ่งนี้ 9 โมง</text>
+      <path d="M96 584 q180 12 430 -4" stroke="#1f3f8a" stroke-width="3" fill="none"/>
+    </g>
+
+    <!-- email invite (hotspot 70%,26% = 840,208) -->
+    <g transform="rotate(-2.5 880 210)">
+      <rect x="740" y="150" width="300" height="150" fill="#eae4d0" stroke="#8d7f5e" stroke-width="2"/>
+      <rect x="740" y="150" width="300" height="30" fill="#8d7f5e"/>
+      <text x="752" y="172" font-family="'Courier New',monospace" font-size="15" fill="#f5f1e5">MAIL · 14/04 18:40</text>
+      <g font-family="'Courier New',monospace" font-size="14" fill="#2b241a">
+        <text x="752" y="206">ถึง: ทีมวิจัยเฟสสอง</text>
+        <text x="752" y="232">เรื่อง: ประชุมด่วน 09:00</text>
+        <text x="752" y="258">"ทบทวนความถูกต้องของ</text>
+        <text x="752" y="282"> ข้อมูลก่อนยื่นจดสิทธิบัตร"</text>
+      </g>
+    </g>
+
+    <!-- transfer slip (hotspot 33%,76% = 396,608) -->
+    <g transform="rotate(5 400 620)">
+      <rect x="250" y="560" width="300" height="130" fill="#e7e9df" stroke="#8d7f5e" stroke-width="2"/>
+      <text x="264" y="590" font-family="'Courier New',monospace" font-size="15" fill="#2b241a">TRANSFER ADVICE</text>
+      <line x1="264" y1="600" x2="534" y2="600" stroke="#a1926d"/>
+      <text x="264" y="628" font-family="'Courier New',monospace" font-size="20" fill="#2b241a">฿ 40,000,000</text>
+      <text x="264" y="654" font-family="'Courier New',monospace" font-size="13" fill="#5c5140">ผู้สั่งจ่าย: ธนกร เลิศวัฒนา</text>
+      <text x="264" y="676" font-family="'Courier New',monospace" font-size="13" fill="#5c5140">อ้างอิง: SHARE-BUYBACK/2025-11</text>
+    </g>
+
+    <!-- printer log (hotspot 76%,66% = 912,528) -->
+    <g>
+      <rect x="800" y="460" width="240" height="140" fill="#eae4d0" stroke="#8d7f5e" stroke-width="1.5"/>
+      <text x="814" y="490" font-family="'Courier New',monospace" font-size="15" fill="#2b241a">PRINT QUEUE</text>
+      <line x1="814" y1="500" x2="1026" y2="500" stroke="#a1926d"/>
+      <g font-family="'Courier New',monospace" font-size="14" fill="#5c5140">
+        <text x="814" y="528">18:33 · 32 หน้า</text>
+        <text x="814" y="554">user: p.waranon</text>
+        <text x="814" y="580">MFP-24-A · สำเร็จ</text>
+      </g>
+    </g>
+  </g>
+
+  <rect width="1200" height="800" fill="url(#rdVig)"/>
+</svg>

@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="สมุดเบิกยาควบคุมของแล็บ แสดงรายการเบิกและรายชื่อผู้มีรหัสเปิดตู้">
+  <defs>
+    <linearGradient id="dcPage" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4f0e2"/>
+      <stop offset="1" stop-color="#e2dbc6"/>
+    </linearGradient>
+    <radialGradient id="dcVig" cx="0.5" cy="0.45" r="0.8">
+      <stop offset="0.5" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.52"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="800" fill="#191510"/>
+  <rect x="30" y="26" width="1140" height="748" rx="4" fill="url(#dcPage)" stroke="#a1926d" stroke-width="2"/>
+
+  <!-- binder holes + spine -->
+  <rect x="30" y="26" width="46" height="748" fill="#d3caae"/>
+  <g fill="#f5f1e5" stroke="#a1926d" stroke-width="2">
+    <circle cx="53" cy="150" r="13"/><circle cx="53" cy="400" r="13"/><circle cx="53" cy="650" r="13"/>
+  </g>
+
+  <g font-family="'Courier New',monospace" fill="#2b241a">
+    <text x="110" y="80" font-size="25" letter-spacing="2">CONTROLLED SUBSTANCE REGISTER</text>
+    <text x="110" y="108" font-size="16" fill="#5c5140">ตู้ยาควบคุม CAB-24L · หน้า 118 · เม.ย. 2026</text>
+    <line x1="110" y1="126" x2="1140" y2="126" stroke="#8d7f5e" stroke-width="2"/>
+  </g>
+
+  <!-- table header -->
+  <g font-family="'Courier New',monospace" font-size="16" fill="#5c5140">
+    <text x="112" y="158">วันที่/เวลา      รายการ                จำนวน   ผู้เบิก              คืน</text>
+    <line x1="110" y1="170" x2="1140" y2="170" stroke="#8d7f5e" stroke-width="1"/>
+  </g>
+
+  <g font-family="'Courier New',monospace" font-size="18" fill="#2b241a">
+    <text x="112" y="206">14/04 09:12   Ketamine 10%          1     ญาดา วิศิษฏ์กุล      ✓</text>
+    <text x="112" y="244">14/04 11:40   Isoflurane            1     แพรวา อินทโชติ       ✓</text>
+    <text x="112" y="282">14/04 14:05   Buprenorphine         2     ญาดา วิศิษฏ์กุล      ✓</text>
+    <text x="112" y="320">14/04 16:22   Ketamine 10%          1     กันตพัฒน์ ศิวะเดช    ✓</text>
+  </g>
+
+  <!-- 17:50 row (hotspot 40%,52% = 480,416) -->
+  <g>
+    <rect x="104" y="386" width="740" height="52" fill="#f6d16a" opacity="0.48"/>
+    <text x="112" y="420" font-family="'Courier New',monospace" font-size="19" fill="#2b241a">14/04 17:50   Midazolam (powder)    2     แพรวา อินทโชติ       —</text>
+    <text x="112" y="464" font-family="'Courier New',monospace" font-size="15" fill="#8a2f24">              วัตถุประสงค์: สัตว์ทดลองชุด B   ·   บันทึกการใช้: ไม่พบ</text>
+  </g>
+
+  <!-- kanta old entry (hotspot 40%,70% = 480,560) -->
+  <g>
+    <rect x="104" y="534" width="740" height="52" fill="#c98b5f" opacity="0.3"/>
+    <text x="112" y="568" font-family="'Courier New',monospace" font-size="19" fill="#2b241a">14/02 10:30   Midazolam (powder)    3     กันตพัฒน์ ศิวะเดช    ✓</text>
+    <text x="112" y="610" font-family="'Courier New',monospace" font-size="15" fill="#3f6b4e">              บันทึกการใช้ครบ · พยาน 2 คน · ตรวจนับตรง</text>
+  </g>
+
+  <!-- access code list (hotspot 74%,27% = 888,216) -->
+  <g>
+    <rect x="866" y="150" width="264" height="196" fill="#eae3cd" stroke="#8d7f5e" stroke-width="2"/>
+    <text x="882" y="182" font-family="'Courier New',monospace" font-size="16" fill="#2b241a">CABINET CODE HOLDERS</text>
+    <line x1="882" y1="194" x2="1114" y2="194" stroke="#a1926d"/>
+    <g font-family="'Courier New',monospace" font-size="16" fill="#4a4132">
+      <text x="882" y="224">1. ดร.ปัณณธร ว.</text>
+      <text x="882" y="256">2. กันตพัฒน์ ศ.</text>
+      <text x="882" y="288">3. แพรวา อ.</text>
+      <text x="882" y="326" font-size="13" fill="#7a6d53">ไม่พบร่องรอยงัดแงะ</text>
+    </g>
+  </g>
+
+  <!-- expiry audit (hotspot 74%,76% = 888,608) -->
+  <g>
+    <rect x="866" y="540" width="264" height="170" fill="#eae3cd" stroke="#8d7f5e" stroke-width="2"/>
+    <text x="882" y="572" font-family="'Courier New',monospace" font-size="16" fill="#2b241a">EXPIRY DESTRUCTION</text>
+    <line x1="882" y1="584" x2="1114" y2="584" stroke="#a1926d"/>
+    <g font-family="'Courier New',monospace" font-size="15" fill="#4a4132">
+      <text x="882" y="614">02/04 · 7 รายการ</text>
+      <text x="882" y="642">กรรมการ 3 คน ลงนาม</text>
+      <text x="882" y="670">ภาพถ่ายแนบ ✓</text>
+    </g>
+  </g>
+
+  <rect width="1200" height="800" fill="url(#dcVig)"/>
+</svg>
