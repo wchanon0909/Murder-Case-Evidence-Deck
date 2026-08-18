@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="บันทึกการเข้าออกด้วยบัตรของชั้น 24 พร้อมสมุดเบิกบัตรสำรอง">
+  <defs>
+    <linearGradient id="alPaper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#efe8d6"/>
+      <stop offset="1" stop-color="#ddd2ba"/>
+    </linearGradient>
+    <radialGradient id="alVig" cx="0.5" cy="0.45" r="0.78">
+      <stop offset="0.5" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.55"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="800" fill="#1a1712"/>
+  <g transform="rotate(-0.8 600 400)">
+    <rect x="330" y="40" width="830" height="720" fill="url(#alPaper)"/>
+    <rect x="330" y="40" width="830" height="720" fill="none" stroke="#b8a982" stroke-width="2"/>
+
+    <g font-family="'Courier New',monospace" fill="#2b241a">
+      <text x="360" y="90" font-size="26" letter-spacing="2">ACCESS CONTROL LOG — FLOOR 24</text>
+      <text x="360" y="120" font-size="18" fill="#5c5140">2026-04-14 18:00 → 2026-04-15 07:00 · door: RD-24-MAIN / RD-24-LAB</text>
+      <line x1="360" y1="140" x2="1130" y2="140" stroke="#8d7f5e" stroke-width="2"/>
+      <text x="362" y="170" font-size="17" fill="#5c5140">TIME    DOOR        CARD ID / NAME                 DIR</text>
+      <line x1="360" y1="182" x2="1130" y2="182" stroke="#8d7f5e" stroke-width="1"/>
+    </g>
+
+    <g font-family="'Courier New',monospace" font-size="19" fill="#2b241a">
+      <text x="362" y="214">18:06  MAIN   C-1180 ธนกร เลิศวัฒนา            OUT</text>
+      <text x="362" y="246">18:52  MAIN   C-2044 ญาดา วิศิษฏ์กุล             OUT</text>
+      <text x="362" y="278">19:28  MAIN   C-1907 แพรวา อินทโชติ            OUT</text>
+      <text x="362" y="310">19:41  MAIN   C-1663 กันตพัฒน์ ศิวะเดช          OUT</text>
+    </g>
+
+    <!-- highlighted 20:05 / 20:44 row block (hotspot 62%,44% = 744,352) -->
+    <g>
+      <rect x="352" y="326" width="786" height="62" fill="#f6d16a" opacity="0.42"/>
+      <text x="362" y="350" font-family="'Courier New',monospace" font-size="19" fill="#2b241a">20:05  LAB    C-0071 เอกรินทร์ พงศ์ไพศาล        IN</text>
+      <text x="362" y="378" font-family="'Courier New',monospace" font-size="19" fill="#2b241a">20:44  MAIN   C-0071 เอกรินทร์ พงศ์ไพศาล        OUT</text>
+    </g>
+
+    <!-- 21:50 row (hotspot 62%,58% = 744,464) -->
+    <g>
+      <rect x="352" y="440" width="786" height="34" fill="#c98b5f" opacity="0.3"/>
+      <text x="362" y="464" font-family="'Courier New',monospace" font-size="19" fill="#2b241a">21:50  MAIN   C-1663 กันตพัฒน์ ศิวะเดช          IN</text>
+      <text x="362" y="496" font-family="'Courier New',monospace" font-size="19" fill="#2b241a">21:56  MAIN   C-1663 กันตพัฒน์ ศิวะเดช          OUT</text>
+    </g>
+
+    <!-- 22:30 row (hotspot 62%,71% = 744,568) -->
+    <g>
+      <text x="362" y="556" font-family="'Courier New',monospace" font-size="19" fill="#2b241a">22:30  MAIN   C-3310 แม่บ้าน (คณะ 2 คน)          IN</text>
+      <text x="362" y="588" font-family="'Courier New',monospace" font-size="19" fill="#2b241a">23:05  MAIN   C-3310 แม่บ้าน (คณะ 2 คน)          OUT</text>
+      <text x="362" y="620" font-family="'Courier New',monospace" font-size="19" fill="#2b241a">06:20  MAIN   C-1422 สุมณฑา ตั้งจิตร            IN</text>
+    </g>
+
+    <g font-family="'Courier New',monospace" font-size="16" fill="#6b5f49">
+      <line x1="360" y1="660" x2="1130" y2="660" stroke="#8d7f5e" stroke-width="1"/>
+      <text x="362" y="688">ไม่มีรายการอื่นระหว่าง 20:05 – 21:50 น.</text>
+      <text x="362" y="716">พิมพ์จากระบบ SECUR-24 · ผู้พิมพ์: ฝ่ายสอบสวน</text>
+    </g>
+  </g>
+
+  <!-- spare-badge loan booklet (hotspot 27%,79% = 324,632) -->
+  <g transform="rotate(-6 260 620)">
+    <rect x="120" y="520" width="290" height="230" rx="6" fill="#cfc6ae" stroke="#7d7156" stroke-width="2"/>
+    <rect x="120" y="520" width="290" height="44" fill="#7d7156"/>
+    <text x="136" y="550" font-family="'Courier New',monospace" font-size="17" fill="#f2ecdc">SPARE BADGE LOAN</text>
+    <g font-family="'Courier New',monospace" font-size="15" fill="#33291c">
+      <text x="136" y="596">18:10  C-0071(spare)</text>
+      <text x="136" y="622">ผู้เบิก: แพรวา อินทโชติ</text>
+      <text x="136" y="648">เหตุผล: บัตรตนเองหาย</text>
+      <text x="136" y="674">คืนเมื่อ: __________</text>
+    </g>
+    <path d="M136 690 h250" stroke="#a3906a" stroke-width="1"/>
+    <text x="136" y="718" font-family="'Courier New',monospace" font-size="14" fill="#8a2f24">ยังไม่คืน</text>
+  </g>
+
+  <rect width="1200" height="800" fill="url(#alVig)"/>
+</svg>
